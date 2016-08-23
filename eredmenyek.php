@@ -59,34 +59,34 @@
 		var atlIdoOrigin = <?=$adatok[2]; ?>;
 		
 		$('#teljIdo').click(function(){
-			if($('#teljIdoMertek').text() == 'milliszekundum'){
-				$('#teljIdo').text($('#teljIdo').text() / 1000);
-				$('#teljIdoMertek').text('másodperc');
-			} else if($('#teljIdoMertek').text() == 'másodperc'){
-				$('#teljIdo').text($('#teljIdo').text() / 60);
-				$('#teljIdoMertek').text('perc');
-			} else if($('#teljIdoMertek').text() == 'perc'){
-				$('#teljIdo').text(teljIdoOrigin);
-				$('#teljIdoMertek').text('milliszekundum');
-			}
+			var valtottArray = valt(teljIdoOrigin, $('#teljIdoMertek').text());
+			$('#teljIdo').text(valtottArray[0]);
+			$('#teljIdoMertek').text(valtottArray[1]);
 		});
 		
 		$('#atlIdo').click(function(){
-			if($('#atlIdoMertek').text() == 'milliszekundum'){
-				$('#atlIdo').text($('#atlIdo').text() / 1000);
-				$('#atlIdoMertek').text('másodperc');
-			} else if($('#atlIdoMertek').text() == 'másodperc'){
-				$('#atlIdo').text($('#atlIdo').text() / 60);
-				$('#atlIdoMertek').text('perc');
-			} else if($('#atlIdoMertek').text() == 'perc'){
-				$('#atlIdo').text(atlIdoOrigin);
-				$('#atlIdoMertek').text('milliszekundum');
-			}
+			var valtottArray = valt(atlIdoOrigin, $('#atlIdoMertek').text());
+			$('#atlIdo').text(valtottArray[0]);
+			$('#atlIdoMertek').text(valtottArray[1]);
 		});
-		
-	
 	
 	});
+	
+	function valt(ertek, mertekEgys){
+		var result = new Array; 
+		if(mertekEgys == 'milliszekundum'){
+			result[0] = ertek / 1000;
+			result[1] = 'másodperc';
+		} else if(mertekEgys == 'másodperc'){
+			result[0] = ertek / 60000;
+			result[1] = 'perc';
+		} else if(mertekEgys == 'perc'){
+			result[0] = ertek;
+			result[1] = 'milliszekundum';
+		}
+		
+		return result;
+	}
 </script>
 
 <h1>Eredmények</h1>
