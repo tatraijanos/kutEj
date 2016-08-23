@@ -75,10 +75,10 @@
 	function valt(ertek, mertekEgys){
 		var result = new Array; 
 		if(mertekEgys == 'milliszekundum'){
-			result[0] = ertek / 1000;
+			result[0] = (ertek / 1000).toFixed(2);
 			result[1] = 'másodperc';
 		} else if(mertekEgys == 'másodperc'){
-			result[0] = ertek / 60000;
+			result[0] = (ertek / 60000).toFixed(2);
 			result[1] = 'perc';
 		} else if(mertekEgys == 'perc'){
 			result[0] = ertek;
