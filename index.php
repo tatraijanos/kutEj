@@ -17,6 +17,9 @@
 								'Prim90' => 'Koch-görbe', 'Prim91' => 'Inverz négyzetes');
 		const INTVALL = array(	1000 => '1 -    1000', 10000 => '1 -   10000', 
 								100000 => '1 -  100000', 1000000 => '1 - 1000000');
+		private static $teljesIdo = 0;
+		private static $teljesDarab = 0;
+		private static $sorok;
 								
 		public function option($ba){
 			$constArray = null;
@@ -124,6 +127,7 @@
 				$selSor = array();
 				$vissza = '';
 				
+				$osszIdo = 0;
 				if($_POST['metod'] == 'Prim1')
 					$selSor[] = array('Szal' => $nagyi[$sorunk][0], 'Tol' => $nagyi[$sorunk][1], 'Ig' => $nagyi[$sorunk][2], 'Darab' => $nagyi[$sorunk][3], 'Start' => $nagyi[$sorunk][4], 'Ido' => $nagyi[$sorunk][5]);
 				else{
@@ -132,14 +136,14 @@
                     }
 				}
 				
-				//TODO: Átadni a másik osztálynak 
-				//self::$teljesIdo = $nagyi[$sorunk][5];
-				//self::$teljesDarab = $nagyi[$sorunk][3];
+				self::$teljesIdo = $nagyi[$sorunk][5];
+				self::$teljesDarab = $nagyi[$sorunk][3];
 				
 				foreach($selSor as $key => $row){
 					$szalRendez[$key] = $row['Szal'];
 				}
 				array_multisort($szalRendez, SORT_ASC, $selSor);
+				self::$sorok = $selSor;
 				
 				$vissza .= '<div name = "sorok">';
 				for($i = 0; $i < count($selSor); $i++){
@@ -154,6 +158,19 @@
                 return '<div class="hiba"><p>Nincsenek a keresésnek megfelelő elemek.</p></div>';
 			
 		}
+		
+		public function getTeljesIdo(){
+			return self::$teljesIdo;
+		}
+				
+		public function getTeljesDarab(){
+			return self::$teljesDarab;
+		}
+		
+		public function getSorok(){
+			return self::$sorok;
+		}
+		
 	}
 ?>
 
