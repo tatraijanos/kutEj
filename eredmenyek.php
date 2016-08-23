@@ -55,12 +55,33 @@
 
 <script type="text/javascript">
 	$( document ).ready(function() {
+		var teljIdoOrigin = <?=$adatok[1]; ?>;
+		var atlIdoOrigin = <?=$adatok[2]; ?>;
+		
 		$('#teljIdo').click(function(){
 			if($('#teljIdoMertek').text() == 'milliszekundum'){
 				$('#teljIdo').text($('#teljIdo').text() / 1000);
-				$('#teljIdoMertek').text('másodperc')
+				$('#teljIdoMertek').text('másodperc');
+			} else if($('#teljIdoMertek').text() == 'másodperc'){
+				$('#teljIdo').text($('#teljIdo').text() / 60);
+				$('#teljIdoMertek').text('perc');
+			} else if($('#teljIdoMertek').text() == 'perc'){
+				$('#teljIdo').text(teljIdoOrigin);
+				$('#teljIdoMertek').text('milliszekundum');
 			}
-			
+		});
+		
+		$('#atlIdo').click(function(){
+			if($('#atlIdoMertek').text() == 'milliszekundum'){
+				$('#atlIdo').text($('#atlIdo').text() / 1000);
+				$('#atlIdoMertek').text('másodperc');
+			} else if($('#atlIdoMertek').text() == 'másodperc'){
+				$('#atlIdo').text($('#atlIdo').text() / 60);
+				$('#atlIdoMertek').text('perc');
+			} else if($('#atlIdoMertek').text() == 'perc'){
+				$('#atlIdo').text(atlIdoOrigin);
+				$('#atlIdoMertek').text('milliszekundum');
+			}
 		});
 		
 	
@@ -72,7 +93,7 @@
 
 <p>Összes prím: <span><?php echo $adatok[0]; ?></span> darab</p>
 <p>Teljes idő: <span id="teljIdo"><?php echo $adatok[1]; ?></span> <span id="teljIdoMertek">milliszekundum</span></p>
-<p>Szálak átlagos ideje: <span><?php echo $adatok[2]; ?></span> milliszekundum</p>
+<p>Szálak átlagos ideje: <span id="atlIdo"><?php echo $adatok[2]; ?></span> <span id="atlIdoMertek">milliszekundum</span></p>
 
 <div>
 	<table>
