@@ -2,13 +2,11 @@
 	header( 'Content-type: text/html; charset=utf-8' );
 	
 	$db = null;
-	$dbc = null;
 	
 	//ToDo: ide jön a DB kapcsolódás
 	if($_SERVER['SERVER_NAME'] == 'localhost'){
-				require_once("./partials/allandok.php");
+		require_once("./partials/allandok.php");
 		$db = new allandok();
-		$dbc = $db -> getDbc('prim');
 	}
 	else
 		//require_once("../allandok.php");

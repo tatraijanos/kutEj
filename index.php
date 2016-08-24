@@ -10,7 +10,7 @@
 								'D0' => 'Delphi', 
 								/*'P0' => 'PHP',*/ 'P1' => 'Python', 
 								'V0' => 'Visual Basic');
-		const P_NYTSZ = array(	'C#', 'C++', 'Delphi', 'Java', 'JavaScript', 'Perl', 'PHP', 'PHP7', 'Python', 'Ruby');
+		const P_NYTSZ = array(	'C#', 'C++', 'Delphi', 'Java', 'JavaScript', 'Perl', 'PHP', 'PHP7', 'Python', 'Ruby', 'Visual Basic');
 		const METODUS = array(	'Prim1' => 'Szál nélküli', 'Prim2' => 'Normál', 'Prim3' => 'Hatvány', 'Prim4' => 'Fibonacci', 
 								'Prim50' => 'Pascal normál', 'Prim51' => 'Pascal optimális', 'Prim52' => 'Pascal páratlan', 
 								'Prim6' => 'Arányos', 'Prim70' => 'Öszetett', 'Prim71' => 'Prím', 'Prim8' => 'Félprím', 
@@ -212,7 +212,7 @@
 
 <h1>Animáció</h1>
 
-<?php if(isset($_POST['bt_betoltes'])) $eredmeny = $indx -> validator(); ?>
+<?php if(isset($_POST['btn_betoltes'])) $eredmeny = $indx -> validator(); ?>
 
 <form method="post">
 	<fieldset>
@@ -239,7 +239,7 @@
 		
 		<br />
 		
-		<input type = "submit" name = "bt_betoltes" value = "Betöltés" />
+		<input type = "submit" name = "btn_betoltes" value = "Betöltés" />
 	</fieldset>
 </form>
 
