@@ -58,6 +58,13 @@
 		var teljIdoOrigin = <?=$adatok[1]; ?>;
 		var atlIdoOrigin = <?=$adatok[2]; ?>;
 		
+		$('#teljIdo, #atlIdo').mouseenter(function(){
+			$(this).css('border', '1px solid grey');
+		}).mouseleave(function(){
+			$(this).css('border', 'none');
+		});
+		
+		
 		$('#teljIdo').click(function(){
 			var valtottArray = valt(teljIdoOrigin, $('#teljIdoMertek').text());
 			$('#teljIdo').text(valtottArray[0]);
