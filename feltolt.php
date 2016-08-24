@@ -1,5 +1,35 @@
 <?php include_once './partials/fejlec.php'; ?>
 
+<?php
+	$fel = new feltolt($dbc);
+	
+	class feltolt{
+		private $dbc;
+		
+		function __construct($dbc){
+			$this -> dbc = $dbc;
+		}
+		
+		public function isFeltolt(){
+			$hiba = '';
+			$maxmeret = 5242880;	//5 Megabyte a maximális méret
+			
+			if($_FILES['CSV_fel']['name'] == '')
+				return $hibak.'Nincs CSV fájl kiválasztva!</div>';
+			
+		}
+		
+		/*public function alma(){
+			$query = "SELECT csoport FROM prim_md";
+			$res = mysqli_query($this -> dbc, $query);
+			while($sor = mysqli_fetch_assoc($res)){
+				echo $sor['csoport'].'<br/>';
+			}
+		}*/
+		
+	}
+?>
+
 <script type="text/javascript">
 	$( document ).ready(function() {
 		$('#tbl_megtekinthet tfoot th').each(function() {

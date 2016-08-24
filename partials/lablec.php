@@ -9,5 +9,5 @@
 </html>
 
 <?php
-	//ToDo: itt zárjuk a DB kapcsolatót. Try-cath ágban
+	$db -> dbcClose();
 ?>
