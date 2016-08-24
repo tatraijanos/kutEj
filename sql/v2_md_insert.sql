@@ -1,0 +1,26 @@
+INSERT INTO prim_md(csoport, sequence, leiras, ertek) 
+VALUES 
+('P_NYELV', 1, 'C#', DEFAULT),
+('P_NYELV', 2, 'C++', DEFAULT),
+('P_NYELV', 3, 'Delphi', DEFAULT),
+('P_NYELV', 4, 'Java', DEFAULT),
+('P_NYELV', 5, 'Perl', DEFAULT),
+('P_NYELV', 6, 'PHP', DEFAULT),
+('P_NYELV', 7, 'PHP7', DEFAULT),
+('P_NYELV', 8, 'Python', DEFAULT),
+('P_NYELV', 9, 'Ruby', DEFAULT),
+
+('METODUS', 1, 'Szál nélküli', 'Prim1'),
+('METODUS', 2, 'Normál', 'Prim2'),
+('METODUS', 3, 'Hatvány', 'Prim3'),
+('METODUS', 4, 'Fibonacci', 'Prim4'),
+('METODUS', 5, 'Pascal normál', 'Prim50'),
+('METODUS', 6, 'Pascal optimális', 'Prim51'),
+('METODUS', 7, 'Pascal páratlan', 'Prim52'),
+('METODUS', 8, 'Arányos', 'Prim6'),
+('METODUS', 9, 'Öszetett', 'Prim70'),
+('METODUS', 10, 'Félprím', 'Prim8'),
+('METODUS', 11, 'Prím', 'Prim71'),
+('METODUS', 12, 'Koch-görbe', 'Prim91'),
+('METODUS', 13, 'Inverz négyzetes', 'Prim90'),
+('METODUS', 14, 'Egyedi', 'Prim10');
