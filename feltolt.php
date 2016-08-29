@@ -135,6 +135,8 @@
 			"sScrollX": "100%",
 			"bScrollCollapse": true,
 			
+			"order": [[ 1, "desc" ]],
+			
 			"fnRowCallback" : function(nRow, aData, iDisplayIndex, iDisplayIndexFull) {
 				$(nRow).attr("id", aData[0]);
 			}
@@ -159,7 +161,7 @@
 		
 		$("#tbl_megtekinthet tbody").dblclick(function() {
 			if(selectedId != undefined){
-				window.location = 'http://hunjoy.esy.es/tea?id=' + selectedId;
+				window.location = '.?fileId=' + selectedId;
 			}
 		});
 		
@@ -185,7 +187,7 @@
 		<tr>
 			<th>Azonosító</th>
 			<th>Dátum</th>
-			<th>Programozási nyelv</th>
+			<th>Nyelv</th>
 			<th>Méret</th>
 		</tr>
 	</thead>
