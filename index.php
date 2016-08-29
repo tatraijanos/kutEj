@@ -3,8 +3,8 @@
 <?php
 	//print_r($_POST);
 
-	$indx = new index();
-	class index{
+	$indx = new Index($fgLex);
+	class Index{
 		const P_NYELV = array(	'J0' => 'Java', 'J1' => 'JavaScript', 
 								'C0' => 'C#', 'C1' => 'C++', 
 								'D0' => 'Delphi', 
@@ -17,9 +17,19 @@
 								'Prim90' => 'Koch-görbe', 'Prim91' => 'Inverz négyzetes');
 		const INTVALL = array(	1000 => '1 -    1000', 10000 => '1 -   10000', 
 								100000 => '1 -  100000', 1000000 => '1 - 1000000');
+								
 		private static $teljesIdo = 0;
 		private static $teljesDarab = 0;
 		private static $sorok;
+		
+		private $fgLex;
+
+		
+		
+		function __construct($fgLex = null){
+			if($fgLex != null)
+				$this -> fgLex = $fgLex;
+		}
 								
 		public function option($ba){
 			$constArray = null;
@@ -99,17 +109,7 @@
 		
 		private function fajlMegnyit($fileUt){
 			if(file_exists($fileUt)){
-				$file = fopen($fileUt, "r");
-				$tartalom = fread($file, filesize($fileUt));
-					
-				$sorok = explode("\r\n", $tartalom);
-				
-				for($s = 0; $s < count($sorok) - 1; $s++){
-					$nagyi[$s] = str_replace('"', '', explode('";"', $sorok[$s]));
-				}
-				
-				fclose($file);				
-				$kiir = $this -> sorKivalaszt($nagyi);
+				$kiir = $this -> sorKivalaszt($this -> fgLex -> csvDarabolo($fileUt));
 				return $kiir;
 			} else 
 				return '<div class="hiba"><p>A fájl nem elérhető, kérem próbálja meg később!</p></div>';

@@ -1,10 +1,11 @@
-CREATE SCHEMA prim;
-
 CREATE TABLE prim.prim_feltolt ( 
 	id                   smallint UNSIGNED NOT NULL  AUTO_INCREMENT,
 	uuid                 varchar(15)  NOT NULL  ,
+	nyelv_cd             tinyint UNSIGNED NOT NULL  ,
 	feltoltes_datum      datetime  NOT NULL DEFAULT CURRENT_TIMESTAMP ,
-	elfogadva_10         bool    ,
+	meret                mediumint UNSIGNED   ,
+	elfogadva_10         bool   DEFAULT true ,
+	hiba                 varchar(1024)    ,
 	torolt_10            bool  NOT NULL DEFAULT false ,
 	CONSTRAINT pk_prim_feltolt PRIMARY KEY ( id ),
 	CONSTRAINT unit_prim_feltolt_uuid UNIQUE ( uuid ) 
@@ -16,9 +17,16 @@ ALTER TABLE prim.prim_feltolt MODIFY id smallint UNSIGNED NOT NULL  AUTO_INCREME
 
 ALTER TABLE prim.prim_feltolt MODIFY uuid varchar(15)  NOT NULL   COMMENT 'A feltöltést ezzel azonosítjuk, ez alapján osztható meg';
 
+ALTER TABLE prim.prim_feltolt MODIFY nyelv_cd tinyint UNSIGNED NOT NULL   COMMENT 'A feltöltött CSV állomány programozási nyelve.
+md.csoport = P_NYELV';
+
 ALTER TABLE prim.prim_feltolt MODIFY feltoltes_datum datetime  NOT NULL DEFAULT CURRENT_TIMESTAMP  COMMENT 'Feltöltés időpontja';
 
-ALTER TABLE prim.prim_feltolt MODIFY elfogadva_10 bool     COMMENT 'A fájl feltöltődése esetén bejegyzés jön létre a táblában, de a validátor megtagadhatja a fájl mentését. Akkor hamis értéket kap a mező. Igaz esetén a fájl eredetinek bizonyult és adatbázisba kerültek az értékei.';
+ALTER TABLE prim.prim_feltolt MODIFY meret mediumint UNSIGNED    COMMENT 'A feltöltött fájl méretének tárolására szolgáló mező. A mező byte-ban kerül tárolásra.';
+
+ALTER TABLE prim.prim_feltolt MODIFY elfogadva_10 bool   DEFAULT true  COMMENT 'A fájl feltöltődése esetén bejegyzés jön létre a táblában, de a validátor megtagadhatja a fájl mentését. Akkor hamis értéket kap a mező. Igaz esetén a fájl eredetinek bizonyult és adatbázisba kerültek az értékei.';
+
+ALTER TABLE prim.prim_feltolt MODIFY hiba varchar(1024)     COMMENT 'A feldolgozás során keletkező hibák szövege, ha a mező nem null akkor elfogadva_10 értéke false.';
 
 ALTER TABLE prim.prim_feltolt MODIFY torolt_10 bool  NOT NULL DEFAULT false  COMMENT 'Logikailag törölt-e a feltöltés. Ebben az esetben nem jelenik meg a listában.';
 

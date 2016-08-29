@@ -33,4 +33,9 @@ VALUES
 ('METODUS', 11, 'Prím', 'Prim71'),
 ('METODUS', 12, 'Koch-görbe', 'Prim91'),
 ('METODUS', 13, 'Inverz négyzetes', 'Prim90'),
-('METODUS', 14, 'Egyedi', 'Prim10');
+('METODUS', 14, 'Egyedi', 'Prim10'),
+
+('TARTOMANY', 1, '1000', DEFAULT),
+('TARTOMANY', 2, '10000', DEFAULT),
+('TARTOMANY', 3, '100000', DEFAULT),
+('TARTOMANY', 4, '1000000', DEFAULT);

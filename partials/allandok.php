@@ -1,5 +1,5 @@
 <?php
-	class allandok{
+	class Allandok{
 		const DB_HOST = 'localhost';
 		const DB_USER = 'root';
 		const DB_PASSWORD = '';
@@ -42,7 +42,7 @@
 			}
 		}
 		
-		public function getMdByGroupName($csoportNeve, $torolt = 'false'){
+		public function getMdListByGroupName($csoportNeve, $torolt = 'false'){
 			$result = null;
 			$queryMd = 'SELECT * FROM prim_md WHERE csoport = "'.$csoportNeve.'" AND torolt_10 = '.$torolt;
 			$queryMd = mysqli_query(self::$dbc, $queryMd);

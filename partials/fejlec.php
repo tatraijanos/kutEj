@@ -1,16 +1,15 @@
 <?php
 	header( 'Content-type: text/html; charset=utf-8' );
 	
-	$db = null;
 	
-	//ToDo: ide jön a DB kapcsolódás
-	if($_SERVER['SERVER_NAME'] == 'localhost'){
-		require_once("./partials/allandok.php");
-		$db = new allandok();
-	}
+	if($_SERVER['SERVER_NAME'] == 'localhost')
+		require_once('./partials/allandok.php');
 	else
-		//require_once("../allandok.php");
 		;
+	require_once('./partials/primFgGyujt.php');
+	
+	$db = new Allandok();
+	$fgLex = new PrimFgGyujt();
 	
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">

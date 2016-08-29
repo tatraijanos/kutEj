@@ -1,9 +1,11 @@
 <?php
-	$eredm = new eredmenyek();
+	$eredm = new Eredmenyek();
 	
-	class eredmenyek{
+	class Eredmenyek{
 		private $indx;
 		private $alapAdatokArray;
+		
+		
 		
 		function __construct(){
 			$this -> indx = new index();

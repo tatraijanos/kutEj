@@ -1,14 +1,19 @@
 <?php include_once './partials/fejlec.php'; ?>
 
 <?php
-	$fel = new feltolt($db);
+	$fel = new Feltolt($db, $fgLex);
 	
-	class feltolt{
+	class Feltolt{
 		private $db;
+		private $fgLex;
 		private $dbc;
+		private $nagyi;
 		
-		function __construct($db){
+		
+		
+		function __construct($db, $fgLex){
 			$this -> db = $db;
+			$this -> fgLex = $fgLex;
 			$this -> dbc = $this -> db -> getDbc();
 		}
 		
@@ -20,7 +25,7 @@
 				return '<div class="hiba"><p>Nincs CSV fájl kiválasztva!</p></div>';
 			else{
 				$maxMeret = $this -> db -> getMaxFileSize();
-				$mdObjectum = $this -> db -> getMdByGroupName('ELFOG_FILE_NEV');
+				$mdObjectum = $this -> db -> getMdListByGroupName('ELFOG_FILE_NEV');
 				$okNev = null;
 				foreach ($mdObjectum as $value){
 					$okNev[$value['val']] = $value['txt'];
@@ -35,17 +40,78 @@
 					return '<div class="hiba">'.$hiba.'</div>';
 				else{
 					$ujNev = rand(1, 9).date("ymdHi").rand(1000, 9999); //hossza: 1 random + 10 dátum + 4 random
-					if(!is_dir('./upload_csvs'))
-						mkdir('./upload_csvs');
-					$teljesNev = './upload_csvs/'.$ujNev;
-					move_uploaded_file($_FILES['feltoltFile']['tmp_name'], $teljesNev);
 					
 					$progCd = $progNyelv = array_search($_FILES['feltoltFile']['name'], $okNev);;
-					$sqlInsFelt = 'INSERT INTO prim_feltolt (uuid, nyelv_cd) VALUES ("'.$ujNev.'", '.$progCd.')';
-					if (!mysqli_query($this -> dbc, $sqlInsFelt))
+					$sqlInsFelt = 'INSERT INTO prim_feltolt (uuid, nyelv_cd, meret) VALUES ("'.$ujNev.'", '.$progCd.', '.$_FILES['feltoltFile']['size'].')';
+					
+					if (mysqli_query($this -> dbc, $sqlInsFelt))
+						 return $this -> trueFeldolgozo(mysqli_insert_id($this -> dbc), $_FILES['feltoltFile']['tmp_name']);
+					else
 						return '<div class="hiba"><p>Az adatbázisba nem sikerült az adatok mentése. Kérem, próbálja meg később.<br />'.mysqli_error($this -> dbc).'<p></div>';
 				}
 			}
+		}
+		
+		public function trueFeldolgozo($id, $fileTmp){
+			$this -> nagyi = $this -> fgLex -> csvDarabolo($fileTmp);
+			
+			$ig = Array();
+			$modszer = Array();
+			$igMd = $this -> db -> getMdListByGroupName('TARTOMANY');
+			foreach ($igMd as $value){
+				$ig[] = $value['txt'];
+			}
+			$modszerMd = $this -> db -> getMdListByGroupName('METODUS');
+			foreach ($modszerMd as $value){
+				$modszer[] = $value['val'];
+			}
+			
+			$hibak = '';
+			for($s = 0; $s < count($this -> nagyi); $s++){
+				if($this -> nagyi[$s][6] == 'true'){
+					if($this -> nagyi[$s][0] < 0 || $this -> nagyi[$s][0] > 13)
+						$hibak .= '<p>A szálak száma a megengedett tartományon kívül esik, a '.($s + 1).'. sorban!</p>';
+					if ($this -> nagyi[$s][1] != 1)
+						$hibak .= '<p>Szabálytalan tartomány kiosztás a '.($s + 1).'. sorban, csak 1-től kezdődhet!</p>';
+					if (!in_array($this -> nagyi[$s][2], $ig))
+						$hibak .= '<p>Szabálytalan tartomány kiosztás a '.($s + 1).'. sorban!</p>';
+					if (!in_array($this -> nagyi[$s][7], $modszer))
+						$hibak .= '<p>Ismeretlen módszer a '.($s + 1).'. sorban!</p>';
+				}
+			}
+			
+			if($hibak != ''){
+				if(strlen($hibak) >= 253)
+					$hibaDbBe = substr($hibak, 0, 253).'...';
+				else 
+					$hibaDbBe = $hibak;
+				$sqlUpdFelt = 'UPDATE prim_feltolt SET elfogadva_10 = false, hiba = "'.$hibaDbBe.'" WHERE id = '.$id;
+				mysqli_query($this -> dbc, $sqlUpdFelt);
+				return '<div class="hiba">'.$hibak.'</div>';
+			} 
+		}
+		
+		public function megtekintheto(){
+			$htmlResult = '';
+			
+			$sqlSelFel = '	SELECT 
+								uuid, feltoltes_datum, meret,
+								( SELECT md.leiras FROM prim_md md WHERE md.csoport = "P_NYELV" AND md.sequence = nyelv_cd) AS nyelv
+							FROM prim_feltolt
+							WHERE 
+								elfogadva_10 = true 
+								AND torolt_10 = false';
+			$sqlSelFel = mysqli_query($this -> dbc, $sqlSelFel);
+			while($sor = mysqli_fetch_assoc($sqlSelFel)){
+				$htmlResult .= '<tr>';
+					$htmlResult .= '<td>'.$sor['uuid'].'</td>';
+					$htmlResult .= '<td>'.$sor['feltoltes_datum'].'</td>';
+					$htmlResult .= '<td>'.$sor['nyelv'].'</td>';
+					$htmlResult .= '<td>'.$sor['meret'].'</td>';
+				$htmlResult .= '</tr>';
+			}
+			
+			return $htmlResult;
 		}
 		
 		/*public function alma(){
@@ -120,6 +186,7 @@
 			<th>Azonosító</th>
 			<th>Dátum</th>
 			<th>Programozási nyelv</th>
+			<th>Méret</th>
 		</tr>
 	</thead>
 	<tfoot>
@@ -127,24 +194,11 @@
 			<th></th>
 			<th></th>
 			<th></th>
+			<th></th>
 		</tr>
 	</tfoot>
 	<tbody>
-		<tr>
-			<td>65347834766535</td>
-			<td>2016-01-16 13:20:09</td>
-			<td>Java</td>
-		</tr>
-		<tr>
-			<td>65892673252373</td>
-			<td>2016-01-16 13:20:09</td>
-			<td>Python</td>
-		</tr>
-		<tr>
-			<td>15121609505061</td>
-			<td>2016-01-16 13:20:09</td>
-			<td>C#</td>
-		</tr>
+		<?php echo $fel -> megtekintheto(); ?>
 	</tbody>
 </table>
 
