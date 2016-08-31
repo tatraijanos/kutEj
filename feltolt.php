@@ -19,7 +19,6 @@
 
 		public function isFeltolt(){
 			$hiba = '';
-			//Szia Jani
 
 
 			if($_FILES['feltoltFile']['name'] == '')
