@@ -2,25 +2,26 @@
 
 <?php
 	$fel = new Feltolt($db, $fgLex);
-	
+
 	class Feltolt{
 		private $db;
 		private $fgLex;
 		private $dbc;
 		private $nagyi;
-		
-		
-		
+
+
+
 		function __construct($db, $fgLex){
 			$this -> db = $db;
 			$this -> fgLex = $fgLex;
 			$this -> dbc = $this -> db -> getDbc();
 		}
-		
+
 		public function isFeltolt(){
 			$hiba = '';
-			
-			
+			//Szia Jani
+
+
 			if($_FILES['feltoltFile']['name'] == '')
 				return '<div class="hiba"><p>Nincs CSV fájl kiválasztva!</p></div>';
 			else{
@@ -30,20 +31,20 @@
 				foreach ($mdObjectum as $value){
 					$okNev[$value['val']] = $value['txt'];
 				}
-				
+
 				if(!in_array($_FILES['feltoltFile']['name'], $okNev))
 					$hiba .= '<p>A fájlnév nem engedélyezett, csak a programjaink által generált név elfogadható!</p>';
 				if($_FILES['feltoltFile']['size'] > $maxMeret)
 					$hiba .= '<p>A fájlméret nem lehet nagyobb '.(int)($maxMeret / 1048576).' MB-nál!</p>';
-			
+
 				if($hiba != '')
 					return '<div class="hiba">'.$hiba.'</div>';
 				else{
 					$ujNev = rand(1, 9).date("ymdHi").rand(1000, 9999); //hossza: 1 random + 10 dátum + 4 random
-					
+
 					$progCd = $progNyelv = array_search($_FILES['feltoltFile']['name'], $okNev);;
 					$sqlInsFelt = 'INSERT INTO prim_feltolt (uuid, nyelv_cd, meret) VALUES ("'.$ujNev.'", '.$progCd.', '.$_FILES['feltoltFile']['size'].')';
-					
+
 					if (mysqli_query($this -> dbc, $sqlInsFelt))
 						 return $this -> trueFeldolgozo(mysqli_insert_id($this -> dbc), $_FILES['feltoltFile']['tmp_name']);
 					else
@@ -51,10 +52,10 @@
 				}
 			}
 		}
-		
+
 		public function trueFeldolgozo($id, $fileTmp){
 			$this -> nagyi = $this -> fgLex -> csvDarabolo($fileTmp);
-			
+
 			$ig = Array();
 			$modszer = Array();
 			$igMd = $this -> db -> getMdListByGroupName('TARTOMANY');
@@ -65,7 +66,7 @@
 			foreach ($modszerMd as $value){
 				$modszer[] = $value['val'];
 			}
-			
+
 			$hibak = '';
 			for($s = 0; $s < count($this -> nagyi); $s++){
 				if($this -> nagyi[$s][6] == 'true'){
@@ -79,27 +80,27 @@
 						$hibak .= '<p>Ismeretlen módszer a '.($s + 1).'. sorban!</p>';
 				}
 			}
-			
+
 			if($hibak != ''){
 				if(strlen($hibak) >= 253)
 					$hibaDbBe = substr($hibak, 0, 253).'...';
-				else 
+				else
 					$hibaDbBe = $hibak;
 				$sqlUpdFelt = 'UPDATE prim_feltolt SET elfogadva_10 = false, hiba = "'.$hibaDbBe.'" WHERE id = '.$id;
 				mysqli_query($this -> dbc, $sqlUpdFelt);
 				return '<div class="hiba">'.$hibak.'</div>';
-			} 
+			}
 		}
-		
+
 		public function megtekintheto(){
 			$htmlResult = '';
-			
-			$sqlSelFel = '	SELECT 
+
+			$sqlSelFel = '	SELECT
 								uuid, feltoltes_datum, meret,
 								( SELECT md.leiras FROM prim_md md WHERE md.csoport = "P_NYELV" AND md.sequence = nyelv_cd) AS nyelv
 							FROM prim_feltolt
-							WHERE 
-								elfogadva_10 = true 
+							WHERE
+								elfogadva_10 = true
 								AND torolt_10 = false';
 			$sqlSelFel = mysqli_query($this -> dbc, $sqlSelFel);
 			while($sor = mysqli_fetch_assoc($sqlSelFel)){
@@ -110,10 +111,10 @@
 					$htmlResult .= '<td>'.$sor['meret'].'</td>';
 				$htmlResult .= '</tr>';
 			}
-			
+
 			return $htmlResult;
 		}
-		
+
 		/*public function alma(){
 			$query = "SELECT csoport FROM prim_md";
 			$res = mysqli_query($this -> dbc, $query);
@@ -121,7 +122,7 @@
 				echo $sor['csoport'].'<br/>';
 			}
 		}*/
-		
+
 	}
 ?>
 
@@ -130,43 +131,43 @@
 		$('#tbl_megtekinthet tfoot th').each(function() {
 			$(this).html( '<input type="search" placeholder="Search" style="width: 50%;" />' );
 		});
-		
+
 		var table = $('#tbl_megtekinthet').DataTable({
 			"sScrollX": "100%",
 			"bScrollCollapse": true,
-			
+
 			"order": [[ 1, "desc" ]],
-			
+
 			"fnRowCallback" : function(nRow, aData, iDisplayIndex, iDisplayIndexFull) {
 				$(nRow).attr("id", aData[0]);
 			}
 		});
-		
+
 		table.columns().every(function() {
 			var that = this;
 			$('input', this.footer()).on('keyup change', function() {
 				if ( that.search() !== this.value ) {
 					that.search( this.value ).draw();
-				}	
+				}
 			});
 		});
-		
+
 		$('#tbl_megtekinthet tbody').on( 'click', 'tr', function () {
 			$('tr').removeClass('selected');
 			$(this).addClass('selected');
 			selectedId = $(this).attr('id');
 			console.log(selectedId);
 		});
-		
-		
+
+
 		$("#tbl_megtekinthet tbody").dblclick(function() {
 			if(selectedId != undefined){
 				window.location = '.?fileId=' + selectedId;
 			}
 		});
-		
+
 	});
-	
+
 </script>
 
 <h1>Feltöltés</h1>
