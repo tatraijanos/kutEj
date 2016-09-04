@@ -121,19 +121,35 @@
 		
 		public function osszefoglalo($osszefoglaloId, $visszaSorDb, $sorIg){
 			$sqlInsEre = '';
-			if($visszaSorDb == 0){
-				$sqlInsEre = 'INSERT INTO prim_eredmenyek (prim_osszefoglalo_id, szal, int_tol, int_ig, megtalalt_prim_darab, 
+			$sqlInsEre = 'INSERT INTO prim_eredmenyek (prim_osszefoglalo_id, szal, int_tol, int_ig, megtalalt_prim_darab, 
 					szal_indulas_ido, szal_futas_ido) ';
-				$sqlInsEre .= 'VALUES ';
+			$sqlInsEre .= 'VALUES ';
+			$vesszo = false;
+			$alma = false;
+			if($visszaSorDb == 0){
 				$sqlInsEre .= '('.$osszefoglaloId.', 1, 1, '.$this -> nagyi[$sorIg][2].', '.$this -> nagyi[$sorIg][3].', 
 					'.$this -> nagyi[$sorIg][4].', '.$this -> nagyi[$sorIg][5].')';
-					
-				mysqli_query($this -> dbc, $sqlInsEre);
 			} else {
-				//for($i = $sorIg - $visszaSorDb; $i < $sorIg; $i++){
-					;
-				//}
+				for($sor = ($sorIg - 1); $sor >= ($sorIg - $visszaSorDb); $sor--){
+					echo 'sorig: '.$sorIg.', vissza: '.$visszaSorDb.'<br/>';
+					print_r($this -> nagyi[$sor]);
+					echo '<-sor: '.$sor.'<hr />';
+					if($this -> nagyi[$sor][6] == 'true'){
+						echo 'Benne? '.$sqlInsEre.'<hr />';
+						$alma = true;
+						break;
+					}
+					if($vesszo)
+						$sqlInsEre .= ', ';
+					$sqlInsEre .= '('.$osszefoglaloId.', '.$this -> nagyi[$sor][0].', '.$this -> nagyi[$sor][1].', 
+						'.$this -> nagyi[$sor][2].', '.$this -> nagyi[$sor][3].', 
+						'.$this -> nagyi[$sor][4].', '.$this -> nagyi[$sor][5].')';
+					$vesszo = true;
+				}
 			}
+			if($alma)
+				echo $sqlInsEre.'<hr />';
+			mysqli_query($this -> dbc, $sqlInsEre);
 			
 			//echo 'Ossz id: '.$osszefoglaloId;
 			//echo '<br/>Vissza '.$visszaSorDb.' sort.<br/>';
