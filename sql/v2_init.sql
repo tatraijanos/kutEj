@@ -60,8 +60,8 @@ CREATE TABLE prim.prim_osszefoglalo (
 	metodus_cd           tinyint UNSIGNED NOT NULL  ,
 	max_tartomany_cd     tinyint UNSIGNED NOT NULL  ,
 	max_szal             tinyint UNSIGNED NOT NULL  ,
-	indulas_ido          int UNSIGNED NOT NULL  ,
-	teljes_futasi_ido    mediumint UNSIGNED NOT NULL  ,
+	indulas_ido          bigint UNSIGNED NOT NULL  ,
+	teljes_futasi_ido    int UNSIGNED NOT NULL  ,
 	CONSTRAINT pk_prim_osszefoglalo PRIMARY KEY ( id )
  ) engine=InnoDB;
 
@@ -79,9 +79,9 @@ md.csoport = TARTOMANY';
 
 ALTER TABLE prim.prim_osszefoglalo MODIFY max_szal tinyint UNSIGNED NOT NULL   COMMENT 'Az összefoglaló sor és az alárendelt rekordok maximális szálainak száma. ';
 
-ALTER TABLE prim.prim_osszefoglalo MODIFY indulas_ido int UNSIGNED NOT NULL   COMMENT 'A kiválasztott mérés az itt meghatározott időponttól indult (unix-idő, milliszekundum). ';
+ALTER TABLE prim.prim_osszefoglalo MODIFY indulas_ido bigint UNSIGNED NOT NULL   COMMENT 'A kiválasztott mérés az itt meghatározott időponttól indult (unix-idő, milliszekundum). ';
 
-ALTER TABLE prim.prim_osszefoglalo MODIFY teljes_futasi_ido mediumint UNSIGNED NOT NULL   COMMENT 'A kiválasztott mérés az itt meghatározott ideig (milliszekundum) futott.';
+ALTER TABLE prim.prim_osszefoglalo MODIFY teljes_futasi_ido int UNSIGNED NOT NULL   COMMENT 'A kiválasztott mérés az itt meghatározott ideig (milliszekundum) futott.';
 
 CREATE TABLE prim.prim_eredmenyek ( 
 	id                   int UNSIGNED NOT NULL  AUTO_INCREMENT,
@@ -90,8 +90,8 @@ CREATE TABLE prim.prim_eredmenyek (
 	int_tol              int UNSIGNED NOT NULL  ,
 	int_ig               int UNSIGNED NOT NULL  ,
 	megtalalt_prim_darab mediumint UNSIGNED NOT NULL  ,
-	szal_indulas_ido     int UNSIGNED NOT NULL  ,
-	szal_futas_ido       mediumint UNSIGNED NOT NULL  ,
+	szal_indulas_ido     bigint UNSIGNED NOT NULL  ,
+	szal_futas_ido       int UNSIGNED NOT NULL  ,
 	CONSTRAINT pk_prim_eredmenyek PRIMARY KEY ( id )
  ) engine=InnoDB;
 
@@ -111,9 +111,9 @@ ALTER TABLE prim.prim_eredmenyek MODIFY int_ig int UNSIGNED NOT NULL   COMMENT '
 
 ALTER TABLE prim.prim_eredmenyek MODIFY megtalalt_prim_darab mediumint UNSIGNED NOT NULL   COMMENT 'A szál a futása során ennyi prímszámot talált meg.';
 
-ALTER TABLE prim.prim_eredmenyek MODIFY szal_indulas_ido int UNSIGNED NOT NULL   COMMENT 'A szál indulási ideje, unix-idő. Miliszekundumban megadott érték. Legkisebb értéke az összefoglaló sorában meghatározott indulási idő.';
+ALTER TABLE prim.prim_eredmenyek MODIFY szal_indulas_ido bigint UNSIGNED NOT NULL   COMMENT 'A szál indulási ideje, unix-idő. Miliszekundumban megadott érték. Legkisebb értéke az összefoglaló sorában meghatározott indulási idő.';
 
-ALTER TABLE prim.prim_eredmenyek MODIFY szal_futas_ido mediumint UNSIGNED NOT NULL   COMMENT 'Az adott szál ennyi milliszekundum idő alatt válogatta ki az intervallumából a prímszámokat. Legkisebb értéke 0, legnagyobb az összefoglaló táblában meghatározott teljes futási idő.';
+ALTER TABLE prim.prim_eredmenyek MODIFY szal_futas_ido int UNSIGNED NOT NULL   COMMENT 'Az adott szál ennyi milliszekundum idő alatt válogatta ki az intervallumából a prímszámokat. Legkisebb értéke 0, legnagyobb az összefoglaló táblában meghatározott teljes futási idő.';
 
 ALTER TABLE prim.prim_eredmenyek ADD CONSTRAINT fk_p_eredmenyek_reference_p_osszefoglalo FOREIGN KEY ( prim_osszefoglalo_id ) REFERENCES prim.prim_osszefoglalo( id ) ON DELETE NO ACTION ON UPDATE NO ACTION;
 

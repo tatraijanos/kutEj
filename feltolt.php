@@ -59,14 +59,16 @@
 			$modszer = Array();
 			$igMd = $this -> db -> getMdListByGroupName('TARTOMANY');
 			foreach ($igMd as $value){
-				$ig[] = $value['txt'];
+				$ig[$value['seq']] = $value['txt'];
 			}
 			$modszerMd = $this -> db -> getMdListByGroupName('METODUS');
 			foreach ($modszerMd as $value){
-				$modszer[] = $value['val'];
+				$modszer[$value['seq']] = $value['val'];
 			}
-
+			
 			$hibak = '';
+			$osszefoglaloSor = Array();
+			$i = 0;
 			for($s = 0; $s < count($this -> nagyi); $s++){
 				if($this -> nagyi[$s][6] == 'true'){
 					if($this -> nagyi[$s][0] < 0 || $this -> nagyi[$s][0] > 13)
@@ -77,6 +79,19 @@
 						$hibak .= '<p>Szabálytalan tartomány kiosztás a '.($s + 1).'. sorban!</p>';
 					if (!in_array($this -> nagyi[$s][7], $modszer))
 						$hibak .= '<p>Ismeretlen módszer a '.($s + 1).'. sorban!</p>';
+						
+					
+					
+					if($hibak == ''){
+						$osszefoglaloSor[$i][0] = array_search($this -> nagyi[$s][7], $modszer);
+						$osszefoglaloSor[$i][1] = array_search($this -> nagyi[$s][2], $ig);
+						$osszefoglaloSor[$i][2] = $this -> nagyi[$s][0];
+						$osszefoglaloSor[$i][3] = $this -> nagyi[$s][4];
+						$osszefoglaloSor[$i][4] = $this -> nagyi[$s][5];
+						$osszefoglaloSor[$i][5] = $s;
+						
+						$i++;
+					}
 				}
 			}
 
@@ -88,7 +103,27 @@
 				$sqlUpdFelt = 'UPDATE prim_feltolt SET elfogadva_10 = false, hiba = "'.$hibaDbBe.'" WHERE id = '.$id;
 				mysqli_query($this -> dbc, $sqlUpdFelt);
 				return '<div class="hiba">'.$hibak.'</div>';
+			} else {
+				foreach($osszefoglaloSor as $value){
+					$sqlOsszFel = 'INSERT INTO prim_osszefoglalo (prim_feltolt_id, metodus_cd, max_tartomany_cd, max_szal, indulas_ido, teljes_futasi_ido)';
+					$sqlOsszFel .= 'VALUES'; 
+					$sqlOsszFel .= '('.$id.', '.$value['0'].', '.$value['1'].', '.$value['2'].', '.$value['3'].', '.$value['4'].')';
+					if (mysqli_query($this -> dbc, $sqlOsszFel))
+						$this -> osszefoglalo(mysqli_insert_id($this -> dbc), ($value['0'] == 1 ? 0 : $value['2']), $value['5']);
+					else{
+						$sqlUpdFelt = 'UPDATE prim_feltolt SET elfogadva_10 = false, hiba = "'.substr(mysqli_error($this -> dbc), 0, 253).'...'.'" WHERE id = '.$id;
+						mysqli_query($this -> dbc, $sqlUpdFelt);
+						return '<div class="hiba"><p>Az adatbázisba nem sikerült az adatok mentése. Kérem, próbálja meg később!<p></div>';
+					}
+				}
 			}
+		}
+		
+		public function osszefoglalo($osszefoglaloId, $visszaSorDb, $sortol){
+			echo 'Ossz id: '.$osszefoglaloId;
+			echo '<br/>Vissza '.$visszaSorDb.' sort.<br/>';
+			echo 'Sortól '.$sortol.'.<br/>';
+			echo '<hr />';
 		}
 
 		public function megtekintheto(){
