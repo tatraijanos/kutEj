@@ -105,10 +105,10 @@
 				return '<div class="hiba">'.$hibak.'</div>';
 			} else {
 				foreach($osszefoglaloSor as $value){
-					$sqlOsszFel = 'INSERT INTO prim_osszefoglalo (prim_feltolt_id, metodus_cd, max_tartomany_cd, max_szal, indulas_ido, teljes_futasi_ido)';
-					$sqlOsszFel .= 'VALUES'; 
-					$sqlOsszFel .= '('.$id.', '.$value['0'].', '.$value['1'].', '.$value['2'].', '.$value['3'].', '.$value['4'].')';
-					if (mysqli_query($this -> dbc, $sqlOsszFel))
+					$sqlInsOssz = 'INSERT INTO prim_osszefoglalo (prim_feltolt_id, metodus_cd, max_tartomany_cd, max_szal, indulas_ido, teljes_futasi_ido)';
+					$sqlInsOssz .= 'VALUES'; 
+					$sqlInsOssz .= '('.$id.', '.$value['0'].', '.$value['1'].', '.$value['2'].', '.$value['3'].', '.$value['4'].')';
+					if (mysqli_query($this -> dbc, $sqlInsOssz))
 						$this -> osszefoglalo(mysqli_insert_id($this -> dbc), ($value['0'] == 1 ? 0 : $value['2']), $value['5']);
 					else{
 						$sqlUpdFelt = 'UPDATE prim_feltolt SET elfogadva_10 = false, hiba = "'.substr(mysqli_error($this -> dbc), 0, 253).'...'.'" WHERE id = '.$id;
@@ -119,11 +119,26 @@
 			}
 		}
 		
-		public function osszefoglalo($osszefoglaloId, $visszaSorDb, $sortol){
-			echo 'Ossz id: '.$osszefoglaloId;
-			echo '<br/>Vissza '.$visszaSorDb.' sort.<br/>';
-			echo 'Sortól '.$sortol.'.<br/>';
-			echo '<hr />';
+		public function osszefoglalo($osszefoglaloId, $visszaSorDb, $sorIg){
+			$sqlInsEre = '';
+			if($visszaSorDb == 0){
+				$sqlInsEre = 'INSERT INTO prim_eredmenyek (prim_osszefoglalo_id, szal, int_tol, int_ig, megtalalt_prim_darab, 
+					szal_indulas_ido, szal_futas_ido) ';
+				$sqlInsEre .= 'VALUES ';
+				$sqlInsEre .= '('.$osszefoglaloId.', 1, 1, '.$this -> nagyi[$sorIg][2].', '.$this -> nagyi[$sorIg][3].', 
+					'.$this -> nagyi[$sorIg][4].', '.$this -> nagyi[$sorIg][5].')';
+					
+				mysqli_query($this -> dbc, $sqlInsEre);
+			} else {
+				//for($i = $sorIg - $visszaSorDb; $i < $sorIg; $i++){
+					;
+				//}
+			}
+			
+			//echo 'Ossz id: '.$osszefoglaloId;
+			//echo '<br/>Vissza '.$visszaSorDb.' sort.<br/>';
+			//echo 'Sortól '.$sortol.'.<br/>';
+			//echo '<hr />';
 		}
 
 		public function megtekintheto(){
