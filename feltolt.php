@@ -39,20 +39,20 @@
 				if($hiba != '')
 					return '<div class="hiba">'.$hiba.'</div>';
 				else{
-					$ujNev = rand(1, 9).date("ymdHi").rand(1000, 9999); //hossza: 1 random + 10 dátum + 4 random
+					$uuid = rand(1, 9).date("ymdHi").rand(1000, 9999); //hossza: 1 random + 10 dátum + 4 random
 
 					$progCd = $progNyelv = array_search($_FILES['feltoltFile']['name'], $okNev);;
-					$sqlInsFelt = 'INSERT INTO prim_feltolt (uuid, nyelv_cd, meret) VALUES ("'.$ujNev.'", '.$progCd.', '.$_FILES['feltoltFile']['size'].')';
+					$sqlInsFelt = 'INSERT INTO prim_feltolt (uuid, nyelv_cd, meret) VALUES ("'.$uuid.'", '.$progCd.', '.$_FILES['feltoltFile']['size'].')';
 
 					if (mysqli_query($this -> dbc, $sqlInsFelt))
-						 return $this -> trueFeldolgozo(mysqli_insert_id($this -> dbc), $_FILES['feltoltFile']['tmp_name']);
+						 return $this -> trueFeldolgozo(mysqli_insert_id($this -> dbc), $_FILES['feltoltFile']['tmp_name'], $uuid);
 					else
 						return '<div class="hiba"><p>Az adatbázisba nem sikerült az adatok mentése. Kérem, próbálja meg később.<br />'.mysqli_error($this -> dbc).'<p></div>';
 				}
 			}
 		}
 
-		public function trueFeldolgozo($id, $fileTmp){
+		public function trueFeldolgozo($id, $fileTmp, $uuid){
 			$this -> nagyi = $this -> fgLex -> csvDarabolo($fileTmp);
 
 			$ig = Array();
@@ -104,18 +104,24 @@
 				mysqli_query($this -> dbc, $sqlUpdFelt);
 				return '<div class="hiba">'.$hibak.'</div>';
 			} else {
+				$vissza = null;
 				foreach($osszefoglaloSor as $value){
 					$sqlInsOssz = 'INSERT INTO prim_osszefoglalo (prim_feltolt_id, metodus_cd, max_tartomany_cd, max_szal, indulas_ido, teljes_futasi_ido)';
 					$sqlInsOssz .= 'VALUES'; 
 					$sqlInsOssz .= '('.$id.', '.$value['0'].', '.$value['1'].', '.$value['2'].', '.$value['3'].', '.$value['4'].')';
 					if (mysqli_query($this -> dbc, $sqlInsOssz))
-						$this -> osszefoglalo(mysqli_insert_id($this -> dbc), ($value['0'] == 1 ? 0 : $value['2']), $value['5']);
+						$vissza = $this -> osszefoglalo(mysqli_insert_id($this -> dbc), ($value['0'] == 1 ? 0 : $value['2']), $value['5']);
 					else{
 						$sqlUpdFelt = 'UPDATE prim_feltolt SET elfogadva_10 = false, hiba = "'.substr(mysqli_error($this -> dbc), 0, 253).'...'.'" WHERE id = '.$id;
 						mysqli_query($this -> dbc, $sqlUpdFelt);
 						return '<div class="hiba"><p>Az adatbázisba nem sikerült az adatok mentése. Kérem, próbálja meg később!<p></div>';
 					}
+					
+					if($vissza != null)
+						return $vissza;
 				}
+				
+				return '<div class="siker"><p>A feltöltés sikeresen megtörtént! A mérés azonosítója: <a href="./?fileId="'.$uuid.'">'.$uuid.'</a></p></div>';
 			}
 		}
 		
@@ -125,18 +131,12 @@
 					szal_indulas_ido, szal_futas_ido) ';
 			$sqlInsEre .= 'VALUES ';
 			$vesszo = false;
-			$alma = false;
 			if($visszaSorDb == 0){
 				$sqlInsEre .= '('.$osszefoglaloId.', 1, 1, '.$this -> nagyi[$sorIg][2].', '.$this -> nagyi[$sorIg][3].', 
 					'.$this -> nagyi[$sorIg][4].', '.$this -> nagyi[$sorIg][5].')';
 			} else {
 				for($sor = ($sorIg - 1); $sor >= ($sorIg - $visszaSorDb); $sor--){
-					echo 'sorig: '.$sorIg.', vissza: '.$visszaSorDb.'<br/>';
-					print_r($this -> nagyi[$sor]);
-					echo '<-sor: '.$sor.'<hr />';
 					if($this -> nagyi[$sor][6] == 'true'){
-						echo 'Benne? '.$sqlInsEre.'<hr />';
-						$alma = true;
 						break;
 					}
 					if($vesszo)
@@ -147,14 +147,10 @@
 					$vesszo = true;
 				}
 			}
-			if($alma)
-				echo $sqlInsEre.'<hr />';
-			mysqli_query($this -> dbc, $sqlInsEre);
-			
-			//echo 'Ossz id: '.$osszefoglaloId;
-			//echo '<br/>Vissza '.$visszaSorDb.' sort.<br/>';
-			//echo 'Sortól '.$sortol.'.<br/>';
-			//echo '<hr />';
+			if (mysqli_query($this -> dbc, $sqlInsEre));
+			else{
+				return '<div class="hiba"><p>Az adatbázisba nem sikerült az adatok mentése. Kérem, próbálja meg később!<p></div>';
+			}
 		}
 
 		public function megtekintheto(){
@@ -179,15 +175,6 @@
 
 			return $htmlResult;
 		}
-
-		/*public function alma(){
-			$query = "SELECT csoport FROM prim_md";
-			$res = mysqli_query($this -> dbc, $query);
-			while($sor = mysqli_fetch_assoc($res)){
-				echo $sor['csoport'].'<br/>';
-			}
-		}*/
-
 	}
 ?>
 
