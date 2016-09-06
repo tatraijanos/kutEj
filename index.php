@@ -80,7 +80,7 @@
 									 WHERE md.csoport = "P_NYELV" AND md.sequence = 
 										(SELECT u.nyelv_cd 
 										 FROM prim_feltolt u 
-										 WHERE u.uuid = "216090620533948")
+										 WHERE u.uuid = "'.$_GET['fileId'].'")
 									) AS nyelv, 
 									s.metodus_cd, 
 									(SELECT md.leiras 
@@ -90,7 +90,7 @@
 								WHERE s.prim_feltolt_id = 
 									(SELECT u.id 
 									 FROM prim_feltolt u 
-									 WHERE u.uuid = "216090620533948") 
+									 WHERE u.uuid = "'.$_GET['fileId'].'") 
 								GROUP BY s.metodus_cd';
 				$sqlSelOss = mysqli_query($this -> dbc, $sqlSelOss);
 				$pNyelv = null;
@@ -104,7 +104,34 @@
 				if($ba == 'nyelv'){
 					$optVissza = '<option value="1" selected="selected">'.$pNyelv.'</option>';
 				} else if($ba == 'metod'){
-					
+					foreach($metodus as $key => $value){
+						if($_POST['metod'] == $key){
+							$optVissza .= '<option value="'.$key.'" selected="selected">'.$value.'</option>';
+						} else {
+							$optVissza .= '<option value="'.$key.'">'.$value.'</option>';
+						}
+					}
+				} else if($ba == 'inter' && !empty($_POST['metod'])){
+					$sqlSelOss = '	SELECT 
+										s.max_tartomany_cd, 
+										(SELECT md.leiras 
+										 FROM prim_md md 
+										 WHERE md.csoport = "TARTOMANY" AND md.sequence = s.max_tartomany_cd) AS max_tartomany 
+									FROM prim_osszefoglalo s 
+									WHERE s.prim_feltolt_id = 
+										(SELECT u.id 
+										 FROM prim_feltolt u 
+										 WHERE u.uuid = "'.$_GET['fileId'].'") AND 
+										s.metodus_cd = '.$_POST['metod'].'
+									GROUP BY s.max_tartomany_cd';
+					$sqlSelOss = mysqli_query($this -> dbc, $sqlSelOss);
+					while($sor = mysqli_fetch_assoc($sqlSelOss)){
+						if($_POST['inter'] == $sor['max_tartomany_cd']){
+							$optVissza .= '<option value="'.$sor['max_tartomany_cd'].'" selected="selected">'.$sor['max_tartomany'].'</option>';
+						} else {
+							$optVissza .= '<option value="'.$sor['max_tartomany_cd'].'">'.$sor['max_tartomany'].'</option>';
+						}
+					}
 				}
 			} else {
 				$constArray = null;
@@ -299,6 +326,8 @@
 	
 	function feltoltottMod(){
 		$("#nyelv").attr('disabled', true);
+		$("#metod").attr('onchange', "this.form.submit()");
+		$("#inter").attr('onchange', "this.form.submit()");
 	}
 	
 </script>
