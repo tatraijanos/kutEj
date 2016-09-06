@@ -50,33 +50,63 @@
 		}
 								
 		public function option($ba){
-			$constArray = null;
-			$postKey = null;
-			if($ba == 'nyelv'){
-				$constArray = index::P_NYELV;
-				$postKey = $_POST['nyelv'];
-			} else if($ba == 'metod'){
-				$constArray = index::METODUS;
-				$postKey = $_POST['metod'];
-			} else if($ba == 'inter'){
-				$constArray = index::INTVALL;
-				$postKey = $_POST['inter'];
-			}
-			
 			$optVissza = '';
-			foreach($constArray as $key => $value){
-				if($key == $postKey){
-					$optVissza .= '<option value="'.$key.'" selected="selected">'.$value.'</option>';
-				} else {
-					$optVissza .= '<option value="'.$key.'">'.$value.'</option>';
+			
+			if($this -> feltoltott10){
+				/*$sqlSelOss = '	SELECT 
+								( SELECT md.leiras 
+								  FROM prim_md md 
+								  WHERE md.csoport = "P_NYELV" AND md.sequence = 
+									( SELECT u.nyelv_cd 
+									  FROM prim_feltolt u 
+									  WHERE u.uuid = "'.$_GET['fileId'].'")
+								) AS nyelv,
+								( SELECT md.leiras
+								  FROM prim_md md 
+								  WHERE md.csoport = "METODUS" AND md.sequence = s.metodus_cd) AS metodus,
+								( SELECT md.leiras 
+								  FROM prim_md md 
+								  WHERE md.csoport = "TARTOMANY" AND md.sequence = s.max_tartomany_cd) AS max_tartomany,
+								s.max_szal
+								FROM prim_osszefoglalo s
+								WHERE s.prim_feltolt_id = 
+									( SELECT u.id 
+									  FROM prim_feltolt u 
+									  WHERE u.uuid = "'.$_GET['fileId'].'")';
+				*/
+				if($ba == 'nyelv'){
+					
+				} else if($ba == 'metod'){
+					
 				}
-			}
-			if($ba == 'nyelv'){
-				$optVissza .= '<optgroup label="Prímtesztelők">';
-				foreach(index::P_NYTSZ as $value){
-					$optVissza .= '<option value="'.$key.'" disabled="disabled">'.$value.'</option>';
+			} else {
+				$constArray = null;
+				$postKey = null;
+				if($ba == 'nyelv'){
+					$constArray = index::P_NYELV;
+					$postKey = $_POST['nyelv'];
+				} else if($ba == 'metod'){
+					$constArray = index::METODUS;
+					$postKey = $_POST['metod'];
+				} else if($ba == 'inter'){
+					$constArray = index::INTVALL;
+					$postKey = $_POST['inter'];
 				}
-				$optVissza .= '</optgroup>';
+				
+				foreach($constArray as $key => $value){
+					if($key == $postKey){
+						$optVissza .= '<option value="'.$key.'" selected="selected">'.$value.'</option>';
+					} else {
+						$optVissza .= '<option value="'.$key.'">'.$value.'</option>';
+					}
+				}
+				if($ba == 'nyelv'){
+					$optVissza .= '<optgroup label="Prímtesztelők">';
+					foreach(index::P_NYTSZ as $value){
+						$optVissza .= '<option value="'.$key.'" disabled="disabled">'.$value.'</option>';
+					}
+					$optVissza .= '</optgroup>';
+				}
 			}
 			return $optVissza;
 		}
@@ -230,7 +260,7 @@
 		
 	});
 </script>
-
+<?php echo $indx -> option('nyelv'); ?>
 
 <h1>Animáció</h1>
 
