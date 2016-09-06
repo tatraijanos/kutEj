@@ -74,8 +74,35 @@
 									  FROM prim_feltolt u 
 									  WHERE u.uuid = "'.$_GET['fileId'].'")';
 				*/
+				$sqlSelOss = '	SELECT 
+									(SELECT md.leiras 
+									 FROM prim_md md 
+									 WHERE md.csoport = "P_NYELV" AND md.sequence = 
+										(SELECT u.nyelv_cd 
+										 FROM prim_feltolt u 
+										 WHERE u.uuid = "216090620533948")
+									) AS nyelv, 
+									s.metodus_cd, 
+									(SELECT md.leiras 
+									 FROM prim_md md 
+									 WHERE md.csoport = "METODUS" AND md.sequence = s.metodus_cd) AS metodus_neve 
+								FROM prim_osszefoglalo s 
+								WHERE s.prim_feltolt_id = 
+									(SELECT u.id 
+									 FROM prim_feltolt u 
+									 WHERE u.uuid = "216090620533948") 
+								GROUP BY s.metodus_cd';
+				$sqlSelOss = mysqli_query($this -> dbc, $sqlSelOss);
+				$pNyelv = null;
+				$metodus = Array();
+				while($sor = mysqli_fetch_assoc($sqlSelOss)){
+					if($pNyelv == null){
+						$pNyelv = $sor['nyelv'];
+					}
+					$metodus[$sor['metodus_cd']] = $sor['metodus_neve'];
+				}
 				if($ba == 'nyelv'){
-					
+					$optVissza = '<option value="1" selected="selected">'.$pNyelv.'</option>';
 				} else if($ba == 'metod'){
 					
 				}
@@ -220,12 +247,18 @@
 		}
 		
 		public function isFeltoltott10(){
-			return $this -> feltoltott10;
+			return $this -> feltoltott10 ? 'true' : 'false';
 		}
 		
 	}
 ?>
 
+<!-- TODO: Norbi, ez csak teszt miatt kell, majd kiemelheted fájlba... -->
+<style>
+	select{
+		 width: 150px;
+	}
+</style>
 
 <script type="text/javascript">
 	$( document ).ready(function() {
@@ -258,9 +291,17 @@
 			allowClear: true
 		});
 		
+		if(<?=$indx -> isFeltoltott10()?>){
+			feltoltottMod();
+		}
+		
 	});
+	
+	function feltoltottMod(){
+		$("#nyelv").attr('disabled', true);
+	}
+	
 </script>
-<?php echo $indx -> option('nyelv'); ?>
 
 <h1>Animáció</h1>
 
@@ -269,7 +310,7 @@
 <form method="post">
 	<fieldset>
 		<label for = "nyelv">Program nyelv:</label>
-		<select name = "nyelv" id = "nyelv">
+		<select name = "nyelv" id = "nyelv" >
 			<option></option>
 			<?php echo $indx -> option('nyelv'); ?>
 		</select>
