@@ -129,7 +129,7 @@
 					$sqlSelOss = mysqli_query($this -> dbc, $sqlSelOss);
 					while($sor = mysqli_fetch_assoc($sqlSelOss)){
 						if($_POST['inter'] == $sor['max_tartomany_cd']){
-							/*$sqlSelOssMaxSzal = '	SELECT 
+							$sqlSelOssMaxSzal = '	SELECT 
 														MAX(max_szal) AS max_szal
 													FROM prim_osszefoglalo s 
 													WHERE 
@@ -141,8 +141,7 @@
 														s.max_tartomany_cd = '.$_POST['inter'];
 							$sqlSelOssMaxSzal = mysqli_query($this -> dbc, $sqlSelOssMaxSzal);
 							$sors = mysqli_fetch_assoc($sqlSelOssMaxSzal);
-							$this -> maxSzal = $sors['max_szal'];*/
-							//sleep(5);
+							$this -> maxSzal = $sors['max_szal'];
 							
 							$optVissza .= '<option value="'.$sor['max_tartomany_cd'].'" selected="selected">'.$sor['max_tartomany'].'</option>';
 						} else {
@@ -179,11 +178,8 @@
 					$optVissza .= '</optgroup>';
 				}
 			}
+			
 			return $optVissza;
-		}
-		
-		public function ssdd(){
-			$this -> maxSzal = 33;
 		}
 		
 		public function validator(){
@@ -314,7 +310,7 @@
 
 <script type="text/javascript">
 	$( document ).ready(function() {
-		$("#szalak").attr('max', <?=$indx -> getMaxSzal()?>);
+		//$("#szalak").attr('max', <?=$indx -> getMaxSzal()?>);
 		
 		var metodVal = $("#metod option:selected" ).val();
 		if(metodVal == 'Prim1'){
@@ -384,7 +380,7 @@
 		</select>
 		
 		<label for = "szalak">Szálak száma:</label>
-		<input type = "number" name = "szalak" id = "szalak" min = "1" value = "<?php if(isset($_POST['szalak'])) echo $_POST['szalak']; else echo '1'; ?>" />
+		<input type = "number" name = "szalak" id = "szalak" min = "1" max="<?php echo $indx -> getMaxSzal(); ?>" value = "<?php if(isset($_POST['szalak'])) echo $_POST['szalak']; else echo '1'; ?>" />
 		
 		<br />
 		
