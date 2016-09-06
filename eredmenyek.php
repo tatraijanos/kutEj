@@ -1,5 +1,5 @@
 <?php
-	$eredm = new Eredmenyek();
+	$eredm = new Eredmenyek($indx);
 	
 	class Eredmenyek{
 		private $indx;
@@ -7,8 +7,9 @@
 		
 		
 		
-		function __construct(){
-			$this -> indx = new index();
+		function __construct($indx){
+			//$this -> indx = new index();
+			$this -> indx = $indx;
 			
 			$this -> alapAdatokArray[0] = $this -> indx -> getTeljesDarab();
 			$this -> alapAdatokArray[1] = $this -> indx -> getTeljesIdo();

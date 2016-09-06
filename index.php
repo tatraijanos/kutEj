@@ -3,7 +3,7 @@
 <?php
 	//print_r($_POST);
 
-	$indx = new Index($fgLex);
+	$indx = new Index($db, $fgLex);
 	class Index{
 		const P_NYELV = array(	'J0' => 'Java', 'J1' => 'JavaScript', 
 								'C0' => 'C#', 'C1' => 'C++', 
@@ -23,12 +23,30 @@
 		private static $sorok;
 		
 		private $fgLex;
+		private $dbc;
+		private $feltoltott10;
 
 		
 		
-		function __construct($fgLex = null){
-			if($fgLex != null)
-				$this -> fgLex = $fgLex;
+		function __construct($db, $fgLex){
+			$this -> dbc = $db -> getDbc();
+			$this -> fgLex = $fgLex;
+			
+			
+			if(!isset($_GET['fileId']))
+				$this -> feltoltott10 = false;
+			else if($_GET['fileId'] == '')
+				$this -> feltoltott10 = false;
+			else{
+				$sqlSelFel= 'SELECT true FROM prim_feltolt WHERE uuid = "'.$_GET['fileId'].'"';
+				$sqlSelFel = mysqli_query($this -> dbc, $sqlSelFel);
+				if(mysqli_num_rows($sqlSelFel) == 1)
+					$this -> feltoltott10 = true;
+				else{
+					//echo '<div class="hiba">Nem található ilyen azonosítójú feltöltés!</div>';
+					$this -> feltoltott10 = false;
+				}
+			}
 		}
 								
 		public function option($ba){
@@ -171,6 +189,10 @@
 			return self::$sorok;
 		}
 		
+		public function isFeltoltott10(){
+			return $this -> feltoltott10;
+		}
+		
 	}
 ?>
 
@@ -213,7 +235,7 @@
 <h1>Animáció</h1>
 
 <?php if(isset($_POST['btn_betoltes'])) $eredmeny = $indx -> validator(); ?>
-
+<?php echo '__'.$indx -> isFeltoltott10().'__'; ?>
 <form method="post">
 	<fieldset>
 		<label for = "nyelv">Program nyelv:</label>
