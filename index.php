@@ -2,7 +2,7 @@
 
 <?php
 	//print_r($_POST);
-
+	
 	$indx = new Index($db, $fgLex);
 	class Index{
 		const P_NYELV = array(	'J0' => 'Java', 'J1' => 'JavaScript', 
@@ -25,13 +25,13 @@
 		private $fgLex;
 		private $dbc;
 		private $feltoltott10;
+		private $maxSzal = 15;
 
 		
 		
 		function __construct($db, $fgLex){
 			$this -> dbc = $db -> getDbc();
 			$this -> fgLex = $fgLex;
-			
 			
 			if(!isset($_GET['fileId']))
 				$this -> feltoltott10 = false;
@@ -87,10 +87,11 @@
 									 FROM prim_md md 
 									 WHERE md.csoport = "METODUS" AND md.sequence = s.metodus_cd) AS metodus_neve 
 								FROM prim_osszefoglalo s 
-								WHERE s.prim_feltolt_id = 
-									(SELECT u.id 
-									 FROM prim_feltolt u 
-									 WHERE u.uuid = "'.$_GET['fileId'].'") 
+								WHERE 
+									s.prim_feltolt_id = 
+										(SELECT u.id 
+										 FROM prim_feltolt u 
+										 WHERE u.uuid = "'.$_GET['fileId'].'") 
 								GROUP BY s.metodus_cd';
 				$sqlSelOss = mysqli_query($this -> dbc, $sqlSelOss);
 				$pNyelv = null;
@@ -118,15 +119,31 @@
 										 FROM prim_md md 
 										 WHERE md.csoport = "TARTOMANY" AND md.sequence = s.max_tartomany_cd) AS max_tartomany 
 									FROM prim_osszefoglalo s 
-									WHERE s.prim_feltolt_id = 
-										(SELECT u.id 
-										 FROM prim_feltolt u 
-										 WHERE u.uuid = "'.$_GET['fileId'].'") AND 
+									WHERE 
+										s.prim_feltolt_id = 
+											(SELECT u.id 
+											 FROM prim_feltolt u 
+											 WHERE u.uuid = "'.$_GET['fileId'].'") AND 
 										s.metodus_cd = '.$_POST['metod'].'
 									GROUP BY s.max_tartomany_cd';
 					$sqlSelOss = mysqli_query($this -> dbc, $sqlSelOss);
 					while($sor = mysqli_fetch_assoc($sqlSelOss)){
 						if($_POST['inter'] == $sor['max_tartomany_cd']){
+							/*$sqlSelOssMaxSzal = '	SELECT 
+														MAX(max_szal) AS max_szal
+													FROM prim_osszefoglalo s 
+													WHERE 
+														s.prim_feltolt_id = 
+															(SELECT u.id 
+															 FROM prim_feltolt u 
+															 WHERE u.uuid = "'.$_GET['fileId'].'") AND 
+														s.metodus_cd = '.$_POST['metod'].' AND 
+														s.max_tartomany_cd = '.$_POST['inter'];
+							$sqlSelOssMaxSzal = mysqli_query($this -> dbc, $sqlSelOssMaxSzal);
+							$sors = mysqli_fetch_assoc($sqlSelOssMaxSzal);
+							$this -> maxSzal = $sors['max_szal'];*/
+							//sleep(5);
+							
 							$optVissza .= '<option value="'.$sor['max_tartomany_cd'].'" selected="selected">'.$sor['max_tartomany'].'</option>';
 						} else {
 							$optVissza .= '<option value="'.$sor['max_tartomany_cd'].'">'.$sor['max_tartomany'].'</option>';
@@ -163,6 +180,10 @@
 				}
 			}
 			return $optVissza;
+		}
+		
+		public function ssdd(){
+			$this -> maxSzal = 33;
 		}
 		
 		public function validator(){
@@ -277,6 +298,10 @@
 			return $this -> feltoltott10 ? 'true' : 'false';
 		}
 		
+		public function getMaxSzal(){
+			return $this -> maxSzal;
+		}
+		
 	}
 ?>
 
@@ -289,6 +314,7 @@
 
 <script type="text/javascript">
 	$( document ).ready(function() {
+		$("#szalak").attr('max', <?=$indx -> getMaxSzal()?>);
 		
 		var metodVal = $("#metod option:selected" ).val();
 		if(metodVal == 'Prim1'){
@@ -325,6 +351,7 @@
 	});
 	
 	function feltoltottMod(){
+		$("#cim").text('Animáció - Feltöltés mód');
 		$("#nyelv").attr('disabled', true);
 		$("#metod").attr('onchange', "this.form.submit()");
 		$("#inter").attr('onchange', "this.form.submit()");
@@ -332,10 +359,10 @@
 	
 </script>
 
-<h1>Animáció</h1>
+<h1 id="cim">Animáció</h1>
 
 <?php if(isset($_POST['btn_betoltes'])) $eredmeny = $indx -> validator(); ?>
-<?php echo '__'.$indx -> isFeltoltott10().'__'; ?>
+
 <form method="post">
 	<fieldset>
 		<label for = "nyelv">Program nyelv:</label>
@@ -357,7 +384,7 @@
 		</select>
 		
 		<label for = "szalak">Szálak száma:</label>
-		<input type = "number" name = "szalak" id = "szalak" min = "1" max = "12" value = "<?php if(isset($_POST['szalak'])) echo $_POST['szalak']; else echo '1'; ?>" />
+		<input type = "number" name = "szalak" id = "szalak" min = "1" value = "<?php if(isset($_POST['szalak'])) echo $_POST['szalak']; else echo '1'; ?>" />
 		
 		<br />
 		
