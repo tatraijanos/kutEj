@@ -10,6 +10,7 @@
 				<li>Kereshető legördülő mezők</li>
 				<li>Új menüpontok (Stratégiák, Verziók)</li>
 				<li>Megtekinthető feltöltések táblázatba rendezése</li>
+				<li>Idők (teljes idő, szálak átlagos ideje) átváltása</li>
 			</ul>
 		</li>
 		<li><a href="http://hunjoy.esy.es/prim" alt="Diplomamunkán bemutatott megjelenítő" target="_blank">Diplomamunkán bemutatott megjelenítő</a></li>
