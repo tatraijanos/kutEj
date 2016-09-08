@@ -23,19 +23,19 @@
 				$minimumIdo = null;
 				$osszIdo = 0;
 				foreach($nagyi as $sor){
-					$osszIdo += $sor['Ido'];
-					if($minimumIdo > $sor['Start'] || $minimumIdo == null)
-						$minimumIdo = $sor['Start'];
+					$osszIdo += $sor['szalFutasIdo'];
+					if($minimumIdo > $sor['szalIndulasIdo'] || $minimumIdo == null)
+						$minimumIdo = $sor['szalIndulasIdo'];
 				}
 				$this -> alapAdatokArray[2] = bcdiv($osszIdo, count($nagyi), 2);
 				
 				foreach($nagyi as $sor){
 					$resultHtml .= '<tr>';
-						$resultHtml .= '<td>'.$sor['Szal'].'</td>';
-						$resultHtml .= '<td>'.$sor['Ido'].' ms</td>';
-						$resultHtml .= '<td>'.($sor['Start'] - $minimumIdo).' ms</td>';
-						$resultHtml .= '<td>'.$sor['Tol'].' - '.$sor['Ig'].'</td>';
-						$resultHtml .= '<td>'.$sor['Darab'].' db</td>';
+						$resultHtml .= '<td>'.$sor['szal'].'</td>';
+						$resultHtml .= '<td>'.$sor['szalFutasIdo'].' ms</td>';
+						$resultHtml .= '<td>'.($sor['szalIndulasIdo'] - $minimumIdo).' ms</td>';
+						$resultHtml .= '<td>'.$sor['intTol'].' - '.$sor['intIg'].'</td>';
+						$resultHtml .= '<td>'.$sor['megtalaltPrimDarab'].' db</td>';
 					$resultHtml .= '</tr>';
 				}
 				

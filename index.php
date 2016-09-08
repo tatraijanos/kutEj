@@ -200,7 +200,7 @@
 				$hibak .= '<p>Kérem, határozza meg a szálak számát!</p>';
 			}
 			
-			if($_POST['metod'] == 'Prim1' && $_POST['szalak'] > 1){
+			if(($_POST['metod'] == 'Prim1' || $_POST['metod'] == 1) && $_POST['szalak'] > 1){
 				$hibak .= '<p>Szál nélküli módban csak 1 lehet a szálak száma!</p>';
 			}
 			
@@ -251,17 +251,17 @@
 				
 				$osszIdo = 0;
 				if($_POST['metod'] == 'Prim1')
-					$selSor[] = array('Szal' => $nagyi[$sorunk][0], 'Tol' => $nagyi[$sorunk][1], 'Ig' => $nagyi[$sorunk][2], 'Darab' => $nagyi[$sorunk][3], 'Start' => $nagyi[$sorunk][4], 'Ido' => $nagyi[$sorunk][5]);
+					$selSor[] = array('szal' => $nagyi[$sorunk][0], 'intTol' => $nagyi[$sorunk][1], 'intIg' => $nagyi[$sorunk][2], 'megtalaltPrimDarab' => $nagyi[$sorunk][3], 'szalIndulasIdo' => $nagyi[$sorunk][4], 'szalFutasIdo' => $nagyi[$sorunk][5]);
 				else{
                     for($i = $sorunk - $_POST['szalak']; $i < $sorunk; $i++){
-						$selSor[]  = array('Szal' => $nagyi[$i][0], 'Tol' => $nagyi[$i][1], 'Ig' => $nagyi[$i][2], 'Darab' => $nagyi[$i][3], 'Start' => $nagyi[$i][4], 'Ido' => $nagyi[$i][5]);
+						$selSor[]  = array('szal' => $nagyi[$i][0], 'intTol' => $nagyi[$i][1], 'intIg' => $nagyi[$i][2], 'megtalaltPrimDarab' => $nagyi[$i][3], 'szalIndulasIdo' => $nagyi[$i][4], 'szalFutasIdo' => $nagyi[$i][5]);
                     }
 				}
 				
 				self::$teljesIdo = $nagyi[$sorunk][5];
 				self::$teljesDarab = $nagyi[$sorunk][3];
 				
-				foreach($selSor as $key => $row){
+				/*foreach($selSor as $key => $row){
 					$szalRendez[$key] = $row['Szal'];
 				}
 				array_multisort($szalRendez, SORT_ASC, $selSor);
@@ -271,13 +271,29 @@
 				for($i = 0; $i < count($selSor); $i++){
 					$vissza .= $selSor[$i]['Szal'].';'.$selSor[$i]['Tol'].';'.$selSor[$i]['Ig'].';'.$selSor[$i]['Darab'].';'.$selSor[$i]['Start'].';'.$selSor[$i]['Ido'].';<br />';
 				}
-				$vissza .= '</div>';
+				$vissza .= '</div>';*/
 				
-				return $vissza;
+				return $this -> sorokRendezoEsKiirato($selSor);
 				
 			}
 			if($sorunk == -1)
                 return '<div class="hiba"><p>Nincsenek a keresésnek megfelelő elemek.</p></div>';
+			
+		}
+		
+		public function sorokRendezoEsKiirato($selSor){
+			foreach($selSor as $key => $row){
+				$szalRendez[$key] = $row['szal'];
+			}
+			array_multisort($szalRendez, SORT_ASC, $selSor);
+			self::$sorok = $selSor;
+			$vissza = '<div name = "sorok">';
+			for($i = 0; $i < count($selSor); $i++){
+				$vissza .= $selSor[$i]['szal'].';'.$selSor[$i]['intTol'].';'.$selSor[$i]['intIg'].';'.$selSor[$i]['megtalaltPrimDarab'].';'.$selSor[$i]['szalIndulasIdo'].';'.$selSor[$i]['szalFutasIdo'].';<br />';
+			}
+			$vissza .= '</div>';
+			
+			return $vissza;
 			
 		}
 		
@@ -297,17 +313,16 @@
 			$sqlSelOss = mysqli_query($this -> dbc, $sqlSelOss);
 			$osszefoglaloId = mysqli_fetch_assoc($sqlSelOss)['id'];
 			
+			$selSor = array();
 			$sqlSelEre = '	SELECT * 
 							FROM prim_eredmenyek e 
 							WHERE e.prim_osszefoglalo_id = '.$osszefoglaloId;
 			$sqlSelEre = mysqli_query($this -> dbc, $sqlSelEre);
-			$vissza = '<div name = "sorok">';
 			while($sor = mysqli_fetch_assoc($sqlSelEre)){
-				$vissza .= $sor['szal'].';'.$sor['int_tol'].';'.$sor['int_ig'].';'.$sor['megtalalt_prim_darab'].';'.$sor['szal_indulas_ido'].';'.$sor['szal_futas_ido'].';<br />';
+				$selSor[]  = array('szal' => $sor['szal'], 'intTol' => $sor['int_tol'], 'intIg' => $sor['int_ig'], 'megtalaltPrimDarab' => $sor['megtalalt_prim_darab'], 'szalIndulasIdo' => $sor['szal_indulas_ido'], 'szalFutasIdo' => $sor['szal_futas_ido']);
 			}
-			$vissza .= '</div>';
 			
-			return $vissza;
+			return $this -> sorokRendezoEsKiirato($selSor);
 		}
 		
 		public function getTeljesIdo(){
