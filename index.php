@@ -184,7 +184,7 @@
 		
 		public function validator(){
 			$hibak = '';
-			if(empty($_POST['nyelv'])){
+			if(empty($_POST['nyelv']) && !$this -> feltoltott10){
 				$hibak .= '<p>Kérem, válassza ki a programozási nyelvet!</p>';
 			}
 			
@@ -210,7 +210,10 @@
 			if($hibak != ''){
 				return '<div class="hiba">'.$hibak.'</div>';
 			} else {
-				return $this -> fileMeghatarozo();
+				if($this -> feltoltott10)
+					return $this -> getOsszefoglaloId();
+				else
+					return $this -> fileMeghatarozo();
 			}
 			
 		}
@@ -278,6 +281,35 @@
 			
 		}
 		
+		public function getOsszefoglaloId(){
+			$sqlSelOss = '	SELECT s.id
+							FROM prim_osszefoglalo s
+							WHERE 
+								s.prim_feltolt_id = 
+									(SELECT u.id 
+									 FROM prim_feltolt u 
+									 WHERE u.uuid = "'.$_GET['fileId'].'") AND 
+								s.metodus_cd = '.$_POST['metod'].' AND 
+								s.max_tartomany_cd = '.$_POST['inter'].' AND 
+								s.max_szal = '.$_POST['szalak'].'
+							GROUP BY s.indulas_ido DESC
+							LIMIT 1';
+			$sqlSelOss = mysqli_query($this -> dbc, $sqlSelOss);
+			$osszefoglaloId = mysqli_fetch_assoc($sqlSelOss)['id'];
+			
+			$sqlSelEre = '	SELECT * 
+							FROM prim_eredmenyek e 
+							WHERE e.prim_osszefoglalo_id = '.$osszefoglaloId;
+			$sqlSelEre = mysqli_query($this -> dbc, $sqlSelEre);
+			$vissza = '<div name = "sorok">';
+			while($sor = mysqli_fetch_assoc($sqlSelEre)){
+				$vissza .= $sor['szal'].';'.$sor['int_tol'].';'.$sor['int_ig'].';'.$sor['megtalalt_prim_darab'].';'.$sor['szal_indulas_ido'].';'.$sor['szal_futas_ido'].';<br />';
+			}
+			$vissza .= '</div>';
+			
+			return $vissza;
+		}
+		
 		public function getTeljesIdo(){
 			return self::$teljesIdo;
 		}
@@ -313,8 +345,9 @@
 		//$("#szalak").attr('max', <?=$indx -> getMaxSzal()?>);
 		
 		var metodVal = $("#metod option:selected" ).val();
-		if(metodVal == 'Prim1'){
+		if(metodVal == 'Prim1' || (<?=$indx -> isFeltoltott10()?> && metodVal == 1)){
 			$("#szalak").attr('readonly', true);
+			$("#szalak").val(1);
 		}
 		
 		$("#nyelv").select2({
