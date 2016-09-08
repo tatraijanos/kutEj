@@ -261,18 +261,6 @@
 				self::$teljesIdo = $nagyi[$sorunk][5];
 				self::$teljesDarab = $nagyi[$sorunk][3];
 				
-				/*foreach($selSor as $key => $row){
-					$szalRendez[$key] = $row['Szal'];
-				}
-				array_multisort($szalRendez, SORT_ASC, $selSor);
-				self::$sorok = $selSor;
-				
-				$vissza .= '<div name = "sorok">';
-				for($i = 0; $i < count($selSor); $i++){
-					$vissza .= $selSor[$i]['Szal'].';'.$selSor[$i]['Tol'].';'.$selSor[$i]['Ig'].';'.$selSor[$i]['Darab'].';'.$selSor[$i]['Start'].';'.$selSor[$i]['Ido'].';<br />';
-				}
-				$vissza .= '</div>';*/
-				
 				return $this -> sorokRendezoEsKiirato($selSor);
 				
 			}
@@ -298,7 +286,12 @@
 		}
 		
 		public function getOsszefoglaloId(){
-			$sqlSelOss = '	SELECT s.id
+			$sqlSelOss = '	SELECT 
+								s.id,
+								s.teljes_futasi_ido,
+								(SELECT SUM(e.megtalalt_prim_darab) 
+								 FROM prim_eredmenyek e 
+								 WHERE e.prim_osszefoglalo_id = s.id) AS teljes_megtalalt_prim_darab
 							FROM prim_osszefoglalo s
 							WHERE 
 								s.prim_feltolt_id = 
@@ -311,7 +304,11 @@
 							GROUP BY s.indulas_ido DESC
 							LIMIT 1';
 			$sqlSelOss = mysqli_query($this -> dbc, $sqlSelOss);
-			$osszefoglaloId = mysqli_fetch_assoc($sqlSelOss)['id'];
+			$sor = mysqli_fetch_assoc($sqlSelOss);
+			
+			$osszefoglaloId = $sor['id'];
+			self::$teljesIdo = $sor['teljes_futasi_ido'];
+			self::$teljesDarab = $sor['teljes_megtalalt_prim_darab'];
 			
 			$selSor = array();
 			$sqlSelEre = '	SELECT * 
