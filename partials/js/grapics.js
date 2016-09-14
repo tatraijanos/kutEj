@@ -4,6 +4,20 @@ $(document).ready(function() {
 		return;
 	}
 
+	$("[name = 'sorok']").after("<div class=\"megjelenito_oldal\" style=\"width: 100%; height: 100%\"></div>");
+
+	$(".megjelenito_oldal").append("<div class=\"bo\" style=\"width: 65%; height: 100%\"></div>");
+	$(".megjelenito_oldal").append("<div class=\"jo\" style=\"width: 35%; height: 100%\"></div>");
+
+	$(".bo").append("<div class=\"idovonal\" style=\"width: 100%; height: 2%\"></div>");
+	$(".idovonal").append("<canvas id=\"katt_canvas\"></canvas>");
+
+	$(".bo").append("<div class=\"kijelzes\" style=\"width: 100%; height: 30%\"></div>");
+	$(".kijelzes").append("<canvas id=\"kij_canvas\"></canvas>");
+
+	$(".bo").append("<div class=\"defrag\" style=\"width: 100%; height: 58%\"></div>");
+	$(".defrag").append("<canvas id=\"defrag_canvas\"></canvas>");
+
 	/* Tomb letrehozasa es feltoltese */
 	function tomb() {
 

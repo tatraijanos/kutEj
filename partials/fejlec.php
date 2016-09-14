@@ -21,11 +21,12 @@
 
 		<link rel="stylesheet" href="./partials/css/select2.min.css" />
 		<link rel="stylesheet" href="./partials/css/dataTables.min.css" />
+		<link rel="stylesheet" href="./partials/css/stilus.css" />
 
 		<script type="text/javascript" src="./partials/js/jquery-3.1.0.min.js"></script>
 		<script type="text/javascript" src="./partials/js/select2.min.js"></script>
 		<script type="text/javascript" src="./partials/js/dataTables.min.js"></script>
-		<script src="js/grapics.js"></script
+		<script type="text/javascript" src="./partials/js/grapics.js"></script>
 	</head>
 	<body>
 		<a href="./index.php" alt="Animáció">Animáció kezelő</a>
