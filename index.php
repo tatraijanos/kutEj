@@ -438,6 +438,3 @@
 <div><?php include_once './eredmenyek.php'; ?></div>
 
 <?php include_once './partials/lablec.php'; ?>
-
-<script src="js/jquery-2.1.4.min.js" type="text/javascript"></script>
-<script src="js/grapics.js"></script
