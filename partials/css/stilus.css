@@ -5,13 +5,6 @@ body, html{
     font-family: Arial;
 }
 
-/*.megjelenito_oldal {
-
-    width: 100%;
-    height: 100%;
-
-}*/
-
 hr{
     /*display: none;*/
     border-color:#CCCCCC;
@@ -39,7 +32,7 @@ fieldset br{
     display: none;
 }
 
-body.feltoltes_oldal br{
+body .feltoltes_oldal br{
     display: none;
 }
 
@@ -74,22 +67,22 @@ body.feltoltes_oldal br{
         border-radius: 2px;
     }
 
-	#sebesseg{
-    width: 4em;
-		height: 2px;
-		margin-left: 0.5em;
-		position: relative;
-		top: 0.3em;
-  }
+  	#sebesseg{
+      width: 4em;
+  		height: 2px;
+  		margin-left: 0.5em;
+  		position: relative;
+  		top: 0.3em;
+    }
 
-	.sebes{
-		display: flex;
-		flex-flow: nowrap;
-	}
+  	.sebes{
+  		display: flex;
+  		flex-flow: nowrap;
+  	}
 
-	.sebes #sebkiiras{
-		margin-left: 0.3em;
-	}
+  	.sebes #sebkiiras{
+  		margin-left: 0.3em;
+  	}
 
 
   input[type='button'], input[type='submit']{
@@ -127,7 +120,7 @@ body.feltoltes_oldal br{
       border-color: #218EFB;
     }
 
-    body.megjelenito_oldal .bo{
+    body.megjelenito_oldal{
       height: 100%;
       width: 65%;
       margin-left: 0;
@@ -148,66 +141,66 @@ body.feltoltes_oldal br{
       margin-left: 1em;
     }
 
-	div.pure-control-buttons{
-		margin-top: 0.5em;
-	}
+  	div.pure-control-buttons{
+  		margin-top: 0.5em;
+  	}
 
-  body.megjelenito_oldal .jo{
-    height: 100%;
-    width: 35%;
-  }
+    body.megjelenito_oldal{
+      height: 100%;
+      width: 35%;
+    }
 
-  body.megjelenito_oldal .idovonal{
-    height: 3%;
-    min-height: 20px;
-  }
+    body.megjelenito_oldal .idovonal{
+      height: 3%;
+      min-height: 20px;
+    }
 
-  body.megjelenito_oldal .kijelzes{
-    height: 30%;
-    min-height: 200px;
-  }
+    body.megjelenito_oldal .kijelzes{
+      height: 30%;
+      min-height: 200px;
+    }
 
-  body.megjelenito_oldal .defrag{
-    padding-top: 2%;
-    height: 40%;
-    min-height: 100px;
-  }
+    body.megjelenito_oldal .defrag{
+      padding-top: 2%;
+      height: 40%;
+      min-height: 100px;
+    }
 
-  body.megjelenito_oldal .jo{
-    padding-left: 1em;
-  }
+    body.megjelenito_oldal .jo{
+        padding-left: 1em;
+    }
 
-  body.megjelenito_oldal .pure-control-group [name="szal"]{
-    max-width: 2.5em;
-  }
+    body.megjelenito_oldal .pure-control-group [name="szal"]{
+        max-width: 2.5em;
+    }
 
-	table, .pure-table{
-		margin-top: 4%;
-	}
+  	table, .pure-table{
+  		  margin-top: 4%;
+  	}
 
-  /*feltoltes oldal stilusa*/
-  body.feltoltes_oldal{
-    display:block;
-  }
+    /*feltoltes oldal stilusa*/
+    body.feltoltes_oldal{
+        display:block;
+    }
 
-  body.feltoltes_oldal .CSV_feltolt{
-    display: flex;
-    flex-flow: nowrap;
-    padding-bottom: 2%;
-  }
+    body.feltoltes_oldal .CSV_feltolt{
+        display: flex;
+        flex-flow: nowrap;
+        padding-bottom: 2%;
+    }
 
-  body.feltoltes_oldal .oldal_torzs{
-    margin-left: 2em;
-    margin-top: 1em;
-  }
+    body.feltoltes_oldal .oldal_torzs{
+        margin-left: 2em;
+        margin-top: 1em;
+    }
 
-  body.feltoltes_oldal .megtekint_fel{
-    padding-bottom: 1em;
-  }
+    body.feltoltes_oldal .megtekint_fel{
+        padding-bottom: 1em;
+    }
 
-  body.feltoltes_oldal a{
-    padding-bottom: 0.5em;
-  }
+    body.feltoltes_oldal a{
+        padding-bottom: 0.5em;
+    }
 
 
 }
@@ -219,7 +212,7 @@ body.feltoltes_oldal br{
     }
 
     body, html{
-       width: 100%;
+        width: 100%;
     }
 
     fieldset, .pure-control-group{
@@ -246,9 +239,9 @@ body.feltoltes_oldal br{
 		    min-height: 5vmin;
     }
 
-	table, .pure-table{
-		margin-top: 2%;
-	}
+  	table, .pure-table{
+  		  margin-top: 2%;
+  	}
 
     body.megjelenito_oldal fieldset{
         padding: 0;
@@ -295,26 +288,26 @@ body.feltoltes_oldal br{
         margin-right: 1em;
     }
 
-}
+    }
 
-body.feltoltes_oldal a{
-     display: flex;
-     flex-flow: column;
-     padding-left: 0;
-     transition: padding-left 0.2s;
- }
+    body.feltoltes_oldal a{
+         display: flex;
+         flex-flow: column;
+         padding-left: 0;
+         transition: padding-left 0.2s;
+     }
 
-body.feltoltes_oldal a:hover{
-    padding-left: 0.5%;
-}
+    body.feltoltes_oldal a:hover{
+        padding-left: 0.5%;
+    }
 
-body.feltoltes_oldal .info_fel{
-    padding-bottom: 3%;
-}
+    body.feltoltes_oldal .info_fel{
+        padding-bottom: 3%;
+    }
 
-h1{
-	font-size: 1.3em;
-}
+    h1{
+    	font-size: 1.3em;
+    }
 /*
 body.feltoltes_oldal h1{
     font-size: 1.3em;
@@ -325,18 +318,19 @@ body.feltoltes_oldal h1{
 }
 */
 
-h2{
-    font-size: 0.7em;
-}
+  h2{
+      font-size: 0.7em;
+  }
 
-table{
-    border-collapse: collapse;
-}
+  table{
+      border-collapse: collapse;
+  }
 
-td,th{
-    padding-right: 0.5em;
-    align-content: center;
-}
+  td,th{
+      padding-right: 0.5em;
+      align-content: center;
+  }
+
 /*
 .tablazat{
     padding-top: 3.6%;
@@ -348,6 +342,7 @@ td,th{
     padding-top: 0;
 }
 */
-div.magyarazat{
-    padding-top: 4%;
-}
+
+  div.magyarazat{
+      padding-top: 4%;
+  }

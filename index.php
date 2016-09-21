@@ -433,6 +433,18 @@
 	</fieldset>
 </form>
 
+<div class="megjelenito_oldal">
+	<div class="idovonal">
+		<canvas id="katt_canvas"></canvas>
+	</div>
+	<div class="kijelzes">
+		<canvas id="kij_canvas"></canvas>
+	</div>
+	<div class="defrag">
+		<canvas id="defrag_canvas"></canvas>
+	</div>
+</div>
+
 <?php if(isset($eredmeny)) echo $eredmeny; ?>
 
 <div><?php include_once './eredmenyek.php'; ?></div>
