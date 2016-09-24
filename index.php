@@ -430,6 +430,8 @@
 		<br />
 
 		<input type = "submit" name = "btn_betoltes" value = "Betöltés" />
+		<input type = "button" name = "btn_indit" value = "Lejátszás" alt="Lejátszás és Leállítás" />
+
 	</fieldset>
 </form>
 

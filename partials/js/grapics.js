@@ -4,20 +4,6 @@ $(document).ready(function() {
 		return;
 	}
 
-	// $("[name = 'sorok']").after("<div class=\"megjelenito_oldal\" style=\"width: 100%; height: 100%\"></div>");
-	//
-	// $(".megjelenito_oldal").append("<div class=\"bo\" style=\"width: 65%; height: 100%\"></div>");
-	// $(".megjelenito_oldal").append("<div class=\"jo\" style=\"width: 35%; height: 100%\"></div>");
-	//
-	// $(".bo").append("<div class=\"idovonal\" style=\"width: 100%; height: 2%\"></div>");
-	// $(".idovonal").append("<canvas id=\"katt_canvas\"></canvas>");
-	//
-	// $(".bo").append("<div class=\"kijelzes\" style=\"width: 100%; height: 30%\"></div>");
-	// $(".kijelzes").append("<canvas id=\"kij_canvas\"></canvas>");
-	//
-	// $(".bo").append("<div class=\"defrag\" style=\"width: 100%; height: 58%\"></div>");
-	// $(".defrag").append("<canvas id=\"defrag_canvas\"></canvas>");
-
 	/* Tomb letrehozasa es feltoltese */
 	function tomb() {
 
@@ -44,6 +30,9 @@ $(document).ready(function() {
 
 	/*globális változók*/
 
+/* ötletek átírásra
+		- lehetne az időknek külön tömbje, így nem a téglalapokból kell szedni akármit is szinkronizálásként
+
 	/*Canvas deklarálás*/
 	var katCanvas = document.getElementById("katt_canvas");
 	var kijCanvas = document.getElementById("kij_canvas");
@@ -61,11 +50,11 @@ $(document).ready(function() {
 	/*idopont ms-ban*/
 	var matrix = tomb();
 	var szalSzam = matrix.length;
-	var kezdoIdo = null;
+	var kezdoIdo = 0;
 	var timeout;
 	var lejatszBe = false;
 
-	var idokonstans = 1;
+	var idokonstans = 0.01;
 	var elteltIdo;
 	var indikator;
 	var teglalapok = [];
@@ -120,15 +109,19 @@ $(document).ready(function() {
 		}
 	});
 
-	$("[name = 'lejatsz']").click(function(){
+	$("[name = 'btn_indit']").click(function(){
+
 		if (lejatszBe == false){
-			$("[name = 'lejatsz']").val("Leállítás");
-			idokonstans = (Math.pow( 2 , $("#sebesseg").val()));
+			$("[name = 'btn_indit']").val("Leállítás");
+			// idokonstans = (Math.pow( 2 , $("#sebesseg").val()));
 			lejatszas();
-		}else{
-			$("[name = 'lejatsz']").val("Lejátszás");
+		}
+
+		else{
+			$("[name = 'btn_indit']").val("Lejátszás");
 			leallit();
 		}
+
 	});
 
 	function lejatszas() {
@@ -155,11 +148,14 @@ $(document).ready(function() {
 		redraw();
 		folyamatSzalak();
 		if(elteltIdo > maxResult - minResult){
-			$("[name = 'lejatsz']").val("Lejátszás");
+
+			$("[name = 'btn_indit']").val("Lejátszás");
 			leallit();
 			elteltIdo = maxResult - minResult;
+
 		}
-		$("#elteltido").html("Eddig eltelt idő: " + parseFloat(elteltIdo).toFixed(2) + " ms.");
+		console.log(elteltIdo+" eltetl "+""+idokonstans+" ido ");
+		// $("#elteltido").html("Eddig eltelt idő: " + parseFloat(elteltIdo).toFixed(2) + " ms.");
 	}
 
 	function leallit(){
@@ -169,22 +165,23 @@ $(document).ready(function() {
 	}
 
 	function folyamatSzalak(){
-		for(var i = 0; i < teglalapok.length; i++){
-			var j;
 
-			if (indikator.x > teglalapok[i].x && teglalapok[i].width !=  0){
-				j = Math.floor((indikator.x - teglalapok[i].x) / teglalapok[i].width * defElems[i].length);
-			}
-			if (indikator.x >=  teglalapok[i].x + teglalapok[i].width){
-				j = defElems[i].length;
-			}
-			if (indikator.x > teglalapok[i].x || indikator.x > teglalapok[i].x + teglalapok[i].width){
-				for(var k = 0; k<j; k++){
-					defElems[i][k].fill = teglalapok[i].fill;
+			for(var i = 0; i < teglalapok.length; i++){
+				console.log(matrix[i][5]);
+				var j;
+				if (indikator.x > teglalapok[i].x && teglalapok[i].width !=  0){
+					j = Math.floor((indikator.x - teglalapok[i].x) / teglalapok[i].width * defElems[i].length);
+					console.log(j+" j "+indikator.x+" ind x "+ teglalapok[i].x+" tegl.x");
 				}
-			}
-
-			defrKirajz(defElems[i]);
+				if (indikator.x >=  teglalapok[i].x + teglalapok[i].width){
+					j = defElems[i].length;
+				}
+				if (indikator.x > teglalapok[i].x || indikator.x > teglalapok[i].x + teglalapok[i].width || matrix[i][5] == 0){
+					for(var k = 0; k<j; k++){
+						defElems[i][k].fill = teglalapok[i].fill;
+					}
+				}
+				defrKirajz(defElems[i]);
 		}
 	}
 
@@ -435,7 +432,7 @@ $(document).ready(function() {
 
 	defrag();
 
-	$(".magyarazat").html("Egy négyzet értéke kb "+defrOszto+" db számnak felel meg.");
+	// $(".magyarazat").html("Egy négyzet értéke kb "+defrOszto+" db számnak felel meg.");
 
 	/* Ablak újraméretezés esetén */
 	setTimeout(function() {
@@ -447,30 +444,30 @@ $(document).ready(function() {
 		});
 	}, 100);
 
-	function handleMouseMoveOnDisplay(e){
-
-		var canvasOffset = $("#kij_canvas").offset();
-		var offsetX = canvasOffset.left;
-		var offsetY = canvasOffset.top;
-
-		mouseX = parseInt(e.clientX - offsetX);
-		mouseY = parseInt(e.clientY - offsetY);
-
-		for (var i = 0; i < teglalapok.length; i++) {
-
-			if (ramutat(mouseX, mouseY,teglalapok[i])){
-
-				document.getElementsByTagName("tr")[i+1].style.fontWeight = "600";
-
-			}
-			else{
-
-				document.getElementsByTagName("tr")[i+1].style.fontWeight = "initial";
-
-			}
-
-		}
-
-}
+// 	function handleMouseMoveOnDisplay(e){
+//
+// 		var canvasOffset = $("#kij_canvas").offset();
+// 		var offsetX = canvasOffset.left;
+// 		var offsetY = canvasOffset.top;
+//
+// 		mouseX = parseInt(e.clientX - offsetX);
+// 		mouseY = parseInt(e.clientY - offsetY);
+//
+// 		for (var i = 0; i < teglalapok.length; i++) {
+//
+// 			if (ramutat(mouseX, mouseY,teglalapok[i])){
+//
+// 				document.getElementsByTagName("tr")[i+1].style.fontWeight = "600";
+//
+// 			}
+// 			else{
+//
+// 				document.getElementsByTagName("tr")[i+1].style.fontWeight = "initial";
+//
+// 			}
+//
+// 		}
+//
+// }
 
 });

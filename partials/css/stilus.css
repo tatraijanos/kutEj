@@ -120,9 +120,9 @@ body .feltoltes_oldal br{
       border-color: #218EFB;
     }
 
-    body.megjelenito_oldal{
+    .megjelenito_oldal{
       height: 100%;
-      width: 65%;
+      width: 100%;
       margin-left: 0;
     }
     /*
@@ -145,32 +145,32 @@ body .feltoltes_oldal br{
   		margin-top: 0.5em;
   	}
 
-    body.megjelenito_oldal{
+    /*.megjelenito_oldal{
       height: 100%;
       width: 35%;
-    }
+    }*/
 
-    body.megjelenito_oldal .idovonal{
+    .megjelenito_oldal .idovonal{
       height: 3%;
       min-height: 20px;
     }
 
-    body.megjelenito_oldal .kijelzes{
+    .megjelenito_oldal .kijelzes{
       height: 30%;
       min-height: 200px;
     }
 
-    body.megjelenito_oldal .defrag{
+    .megjelenito_oldal .defrag{
       padding-top: 2%;
       height: 40%;
       min-height: 100px;
     }
 
-    body.megjelenito_oldal .jo{
+    .megjelenito_oldal .jo{
         padding-left: 1em;
     }
 
-    body.megjelenito_oldal .pure-control-group [name="szal"]{
+    .megjelenito_oldal .pure-control-group [name="szal"]{
         max-width: 2.5em;
     }
 
@@ -179,26 +179,26 @@ body .feltoltes_oldal br{
   	}
 
     /*feltoltes oldal stilusa*/
-    body.feltoltes_oldal{
+    .feltoltes_oldal{
         display:block;
     }
 
-    body.feltoltes_oldal .CSV_feltolt{
+    .feltoltes_oldal .CSV_feltolt{
         display: flex;
         flex-flow: nowrap;
         padding-bottom: 2%;
     }
 
-    body.feltoltes_oldal .oldal_torzs{
+    .feltoltes_oldal .oldal_torzs{
         margin-left: 2em;
         margin-top: 1em;
     }
 
-    body.feltoltes_oldal .megtekint_fel{
+    .feltoltes_oldal .megtekint_fel{
         padding-bottom: 1em;
     }
 
-    body.feltoltes_oldal a{
+    .feltoltes_oldal a{
         padding-bottom: 0.5em;
     }
 
@@ -243,25 +243,25 @@ body .feltoltes_oldal br{
   		  margin-top: 2%;
   	}
 
-    body.megjelenito_oldal fieldset{
+    .megjelenito_oldal fieldset{
         padding: 0;
     }
 
-    body.megjelenito_oldal fieldset .pure-control-buttons{
+    .megjelenito_oldal fieldset .pure-control-buttons{
         margin: 1em 0 0 0;
     }
 
-    body.megjelenito_oldal div.bo, body.megjelenito_oldal div.jo{
+    .megjelenito_oldal div.bo, body.megjelenito_oldal div.jo{
         margin: 0 1em 0 1em;
     }
 
     /*feltoltes oldal stilusa*/
 
-    body.feltoltes_oldal .megtekint_fel{
+    .feltoltes_oldal .megtekint_fel{
         padding-bottom: 5%;
     }
 
-    body.feltoltes_oldal a{
+    .feltoltes_oldal a{
         padding-bottom: 3%;
     }
 
@@ -269,39 +269,39 @@ body .feltoltes_oldal br{
         display: none;
     }
 
-    body.feltoltes_oldal .CSV_feltolt{
+    .feltoltes_oldal .CSV_feltolt{
         display: flex;
         flex-flow: nowrap;
         padding-bottom: 5%;
     }
 
-    body.feltoltes_oldal .megtekint_fel{
+    .feltoltes_oldal .megtekint_fel{
         padding-bottom: 5%;
     }
 
-    body.feltoltes_oldal a{
+    .feltoltes_oldal a{
         padding-bottom: 3%;
     }
 
-    body.feltoltes_oldal .oldal_tartalom{
+    .feltoltes_oldal .oldal_tartalom{
         margin-left: 1em;
         margin-right: 1em;
     }
 
     }
 
-    body.feltoltes_oldal a{
+    .feltoltes_oldal a{
          display: flex;
          flex-flow: column;
          padding-left: 0;
          transition: padding-left 0.2s;
      }
 
-    body.feltoltes_oldal a:hover{
+    .feltoltes_oldal a:hover{
         padding-left: 0.5%;
     }
 
-    body.feltoltes_oldal .info_fel{
+    .feltoltes_oldal .info_fel{
         padding-bottom: 3%;
     }
 
