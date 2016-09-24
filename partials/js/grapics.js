@@ -141,6 +141,7 @@ $(document).ready(function() {
 	$("[name = 'btn_leallit']").click(function(){
 		stop = true;
 		torles();
+		leallit();
 	})
 
 	function lejatszas() {
@@ -169,6 +170,7 @@ $(document).ready(function() {
 		if(elteltIdo > maxResult - minResult){
 
 			$("[name = 'btn_indit']").val("Lejátszás");
+			stop = true;
 			leallit();
 			elteltIdo = maxResult - minResult;
 
