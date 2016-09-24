@@ -53,9 +53,12 @@ $(document).ready(function() {
 	var kezdoIdo = 0;
 	var timeout;
 	var lejatszBe = false;
+	var stop = true;
 
+ /* sebesség állításhoz*/
 	var idokonstans = 0.01;
 	var elteltIdo;
+	var eltelt;
 	var indikator;
 	var teglalapok = [];
 	var minResult, maxResult;
@@ -68,7 +71,6 @@ $(document).ready(function() {
 		if(minResult > next){
 			minResult = next;
 		}
-
 	}
 
 	maxResult = (parseInt(matrix[0][4]) + parseInt(matrix[0][5]));
@@ -100,6 +102,7 @@ $(document).ready(function() {
 
 	meretMintaVetel();
 
+	/*
 	$("#sebesseg").on('input', function(){
 		if( (Math.pow( 2 , $("#sebesseg").val())) < 1 ){
 			$("#sebkiiras").html( parseFloat(Math.pow( 2 , $("#sebesseg").val())).toFixed(2) + "x");
@@ -108,11 +111,22 @@ $(document).ready(function() {
 			$("#sebkiiras").html(Math.pow( 2 , $("#sebesseg").val())+ "x");
 		}
 	});
+ 	*/
 
 	$("[name = 'btn_indit']").click(function(){
 
 		if (lejatszBe == false){
-			$("[name = 'btn_indit']").val("Leállítás");
+			$("[name = 'btn_indit']").val("Szüneteltetés");
+			eltelt = Date.now();
+			if (stop == true){
+				kezdoIdo = Date.now();
+				elteltIdo = 0;
+			}
+			else {
+				// kezdoIdo = eltelt;
+			}
+			console.log("------------------------------");
+			stop = false;
 			// idokonstans = (Math.pow( 2 , $("#sebesseg").val()));
 			lejatszas();
 		}
@@ -124,9 +138,13 @@ $(document).ready(function() {
 
 	});
 
+	$("[name = 'btn_leallit']").click(function(){
+		stop = true;
+		torles();
+	})
+
 	function lejatszas() {
 		torles();
-		kezdoIdo = Date.now();
 		lejatszBe = true;
 		lejatsz();
 	}
@@ -142,7 +160,8 @@ $(document).ready(function() {
 
 	function lejatsz() {
 		timeout = setTimeout(lejatsz, 53);
-		elteltIdo = idokonstans*(Date.now() - kezdoIdo);
+		elteltIdo = idokonstans*(Date.now() - kezdoIdo) + elteltIdo;
+		console.log(eltelt + " eltelt " + elteltIdo+" elteltIdo "+ kezdoIdo + " kezd " + Date.now() + " Datenow ");
 		indikator.x = elteltIdo*xmeret;
 		vegzettSzalak();
 		redraw();
@@ -154,7 +173,6 @@ $(document).ready(function() {
 			elteltIdo = maxResult - minResult;
 
 		}
-		console.log(elteltIdo+" eltetl "+""+idokonstans+" ido ");
 		// $("#elteltido").html("Eddig eltelt idő: " + parseFloat(elteltIdo).toFixed(2) + " ms.");
 	}
 
@@ -167,11 +185,11 @@ $(document).ready(function() {
 	function folyamatSzalak(){
 
 			for(var i = 0; i < teglalapok.length; i++){
-				console.log(matrix[i][5]);
+				// console.log(matrix[i][5]);
 				var j;
 				if (indikator.x > teglalapok[i].x && teglalapok[i].width !=  0){
 					j = Math.floor((indikator.x - teglalapok[i].x) / teglalapok[i].width * defElems[i].length);
-					console.log(j+" j "+indikator.x+" ind x "+ teglalapok[i].x+" tegl.x");
+					// console.log(j+" j "+indikator.x+" ind x "+ teglalapok[i].x+" tegl.x");
 				}
 				if (indikator.x >=  teglalapok[i].x + teglalapok[i].width){
 					j = defElems[i].length;
