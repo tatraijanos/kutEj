@@ -12,11 +12,11 @@
 								'V0' => 'Visual Basic');
 		const P_NYTSZ = array(	'C#', 'C++', 'Delphi', 'Java', 'JavaScript', 'Perl', 'PHP', 'PHP7', 'Python', 'Ruby', 'Visual Basic');
 		const METODUS = array(	'Prim1' => 'Szál nélküli', 'Prim2' => 'Normál', 'Prim3' => 'Hatvány', 'Prim4' => 'Fibonacci',
-								'Prim50' => 'Pascal normál', 'Prim51' => 'Pascal optimális', 'Prim52' => 'Pascal páratlan',
+								/*'Prim50' => 'Pascal normál', 'Prim51' => 'Pascal optimális', 'Prim52' => 'Pascal páratlan',*/
 								'Prim6' => 'Arányos', 'Prim70' => 'Öszetett', 'Prim71' => 'Prím', 'Prim8' => 'Félprím',
 								'Prim90' => 'Koch-görbe', 'Prim91' => 'Inverz négyzetes');
-		const INTVALL = array(	1000 => '1 -    1000', 10000 => '1 -   10000',
-								100000 => '1 -  100000', 1000000 => '1 - 1000000');
+		const INTVALL = array(	10000 => '1 -   10000', 100000 => '1 -  100000', 
+								1000000 => '1 - 1000000', 10000000 => '1 - 10000000');
 
 		private static $teljesIdo = 0;
 		private static $teljesDarab = 0;
@@ -221,6 +221,24 @@
 		private function fileMeghatarozo(){
 			if($_POST['nyelv'] == 'J0'){
 				$fileUt = './csvs/primJava.csv';
+                return $this -> fajlMegnyit($fileUt);
+			} else if($_POST['nyelv'] == 'J1'){
+				$fileUt = './csvs/primJS.csv';
+                return $this -> fajlMegnyit($fileUt);
+			} else if($_POST['nyelv'] == 'C0'){
+				$fileUt = './csvs/primC#.csv';
+                return $this -> fajlMegnyit($fileUt);
+			} else if($_POST['nyelv'] == 'C1'){
+				$fileUt = './csvs/primC++.csv';
+                return $this -> fajlMegnyit($fileUt);
+			} else if($_POST['nyelv'] == 'D0'){
+				$fileUt = './csvs/primDelphi.csv';
+                return $this -> fajlMegnyit($fileUt);
+			} else if($_POST['nyelv'] == 'P1'){
+				$fileUt = './csvs/primPython.csv';
+                return $this -> fajlMegnyit($fileUt);
+			} else if($_POST['nyelv'] == 'V0'){
+				$fileUt = './csvs/primVB.csv';
                 return $this -> fajlMegnyit($fileUt);
 			}
 
