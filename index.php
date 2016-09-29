@@ -437,19 +437,23 @@
 </form>
 
 <div class="megjelenito_oldal">
-	<div class="idovonal">
-		<canvas id="katt_canvas"></canvas>
+	<div class="bo">
+		<div class="idovonal">
+			<canvas id="katt_canvas"></canvas>
+		</div>
+		<div class="kijelzes">
+			<canvas id="kij_canvas"></canvas>
+		</div>
+		<div class="defrag">
+			<canvas id="defrag_canvas"></canvas>
+		</div>
 	</div>
-	<div class="kijelzes">
-		<canvas id="kij_canvas"></canvas>
-	</div>
-	<div class="defrag">
-		<canvas id="defrag_canvas"></canvas>
+
+	<div class="jo">
+		<?php if(isset($eredmeny)) echo $eredmeny; ?>
+
+		<div><?php include_once './eredmenyek.php'; ?></div>
 	</div>
 </div>
-
-<?php if(isset($eredmeny)) echo $eredmeny; ?>
-
-<div><?php include_once './eredmenyek.php'; ?></div>
 
 <?php include_once './partials/lablec.php'; ?>
