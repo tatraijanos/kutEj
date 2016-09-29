@@ -63,7 +63,7 @@ $(document).ready(function() {
 	var teglalapok = [];
 	var minResult, maxResult;
 
-	var szinTomb = '#FF1800,#90DA1E,#FF8000,#197893,#C61B6C,#3F0A68,#821A9C,#7B0000,#8CA500,#320465,#00BA5A,#003985'.split(',');
+	var szinTomb = '#FF1800,#90DA1E,#FF8000,#197893,#C61B6C,#3F0A68,#821A9C,#7B0000,#8CA500,#320465,#00BA5A,#003985,#1EB490,#D5621D,#E6136C'.split(',');
 
 	minResult = parseInt(matrix[0][4]);
 	for(var i = 0; i < matrix.length; i++) {
