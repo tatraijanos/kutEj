@@ -71,7 +71,7 @@
 			$i = 0;
 			for($s = 0; $s < count($this -> nagyi); $s++){
 				if($this -> nagyi[$s][6] == 'true'){
-					if($this -> nagyi[$s][0] < 0 || $this -> nagyi[$s][0] > 13)
+					if($this -> nagyi[$s][0] < 0 || $this -> nagyi[$s][0] > 16)
 						$hibak .= '<p>A szálak száma a megengedett tartományon kívül esik, a '.($s + 1).'. sorban!</p>';
 					if ($this -> nagyi[$s][1] != 1)
 						$hibak .= '<p>Szabálytalan tartomány kiosztás a '.($s + 1).'. sorban, csak 1-től kezdődhet!</p>';
