@@ -5,7 +5,7 @@
 	if($_SERVER['SERVER_NAME'] == 'localhost')
 		require_once('./partials/allandok.php');
 	else
-		;
+		require_once('./partials/allandokSz.php');
 	require_once('./partials/primFgGyujt.php');
 
 	$db = new Allandok();
