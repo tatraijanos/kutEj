@@ -24,6 +24,7 @@
 		<link rel="stylesheet" href="./partials/css/stilus.css" />
 
 		<script type="text/javascript" src="./partials/js/jquery-3.1.0.min.js"></script>
+		<script type="text/javascript" src="./partials/js/jquery.mousewheel.min.js"></script>
 		<script type="text/javascript" src="./partials/js/select2.min.js"></script>
 		<script type="text/javascript" src="./partials/js/dataTables.min.js"></script>
 		<script type="text/javascript" src="./partials/js/grapics.js"></script>

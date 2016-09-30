@@ -93,27 +93,50 @@ $(document).ready(function() {
 		kijCanvas.height = Math.floor($(".kijelzes").height());
 		defCanvas.height = Math.floor($(".defrag").height());
 
-		xmeret =  kijCanvas.width / (maxResult - minResult);
-
+		if (parseInt(maxResult-minResult) == 0){
+			xmeret = 1;
+		}
+		else{
+			xmeret =  kijCanvas.width / (maxResult - minResult);
+		}
 		leptek = parseFloat((foleptek / xmeret).toFixed(0));
-		console.log(leptek);
+		// console.log(leptek);
 		indikator = new Tegl(0, -1, 0, 1, kijCanvas.height, "#AA0000");
 	}
 
 	meretMintaVetel();
 
-	/*
-	$("#sebesseg").on('input', function(){
-		if( (Math.pow( 2 , $("#sebesseg").val())) < 1 ){
-			$("#sebkiiras").html( parseFloat(Math.pow( 2 , $("#sebesseg").val())).toFixed(2) + "x");
+
+	// $("[name = 'txt_sebb']").on('input', function(){
+	// 	if( (Math.pow( 2 , $("#sebesseg").val())) < 1 ){
+	// 		$("#sebkiiras").html( parseFloat(Math.pow( 2 , $("#sebesseg").val())).toFixed(2) + "x");
+	// 	}
+	// 	else{
+	// 		$("#sebkiiras").html(Math.pow( 2 , $("#sebesseg").val())+ "x");
+	// 	}
+	// });
+
+/*
+$("#txt_sebb").bind("mousewheel", function(event, delta) {
+		console.log(delta);
+		if (delta > 0) {
+				this.value = parseInt(this.value) + 1;
 		}
-		else{
-			$("#sebkiiras").html(Math.pow( 2 , $("#sebesseg").val())+ "x");
+		else {
+				if (parseInt(this.value) > 0) {
+						this.value = parseInt(this.value) - 1;
+				}
 		}
-	});
- 	*/
+
+		return false;
+
+ });
+*/
 
 	$("[name = 'btn_indit']").click(function(){
+
+
+		idokonstans = parseFloat(parseInt($("[name = 'txt_sebb']").val()) * 0.01);
 
 		if (lejatszBe == false){
 			$("[name = 'btn_indit']").val("Szüneteltetés");
@@ -125,14 +148,13 @@ $(document).ready(function() {
 			else {
 				// kezdoIdo = eltelt;
 			}
-			console.log("------------------------------");
+			// console.log("------------------------------");
 			stop = false;
 			// idokonstans = (Math.pow( 2 , $("#sebesseg").val()));
 			lejatszas();
 		}
 
 		else{
-			$("[name = 'btn_indit']").val("Lejátszás");
 			leallit();
 		}
 
@@ -162,12 +184,13 @@ $(document).ready(function() {
 	function lejatsz() {
 		timeout = setTimeout(lejatsz, 53);
 		elteltIdo = idokonstans*(Date.now() - kezdoIdo) + elteltIdo;
-		console.log(eltelt + " eltelt " + elteltIdo+" elteltIdo "+ kezdoIdo + " kezd " + Date.now() + " Datenow ");
+		// console.log(eltelt + " eltelt " + elteltIdo+" elteltIdo "+ kezdoIdo + " kezd " + Date.now() + " Datenow ");
 		indikator.x = elteltIdo*xmeret;
 		vegzettSzalak();
 		redraw();
 		folyamatSzalak();
-		if(elteltIdo > maxResult - minResult){
+
+		if(elteltIdo > (maxResult - minResult)){
 
 			$("[name = 'btn_indit']").val("Lejátszás");
 			stop = true;
@@ -179,6 +202,7 @@ $(document).ready(function() {
 	}
 
 	function leallit(){
+		$("[name = 'btn_indit']").val("Lejátszás");
 		clearTimeout(timeout);
 		lejatszBe = false;
 		redraw();
@@ -326,8 +350,16 @@ $(document).ready(function() {
 			x = matrix[id][4];
 			x = x - minResult;
 			x = x * xmeret+xpoz;
-			width = parseInt(matrix[id][5]);
-			width = xmeret * width;
+			// console.log(maxResult-minResult);
+			if (parseInt(maxResult-minResult) == 0){
+				width = 1;
+				width = xmeret * width;
+			}
+			else {
+				width = parseInt(matrix[id][5]);
+				width = xmeret * width;
+			}
+			console.log(width);
 			szin = szinTomb[id];
 			teglalapok.push(new Tegl(id, x, y, width, height, szin));
 			y = y + cellaMag;

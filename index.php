@@ -451,8 +451,10 @@
 			<br />
 
 			<input type = "submit" name = "btn_betoltes" value = "Betöltés" />
-			<input type = "button" name = "btn_indit" value = "Lejátszás" alt="Lejátszás gomb" />
-			<input type = "button" name = "btn_leallit" value = "Leállítás" alt="Leállítás gomb" />
+			<input type = "button" name = "btn_indit" value = "Lejátszás" alt = "Lejátszás gomb" />
+			<input type = "button" name = "btn_leallit" value = "Leállítás" alt = "Leállítás gomb" />
+			<label for = "txt_sebb" > Sebesség százalékban:</label>
+			<input type = "number" name = "txt_sebb" id = "txt_sebb" value ="100" alt = "Sebesség beállítás százalékban" min="1" />
 
 		</fieldset>
 	</form>

@@ -72,6 +72,7 @@ body .feltoltes_oldal br{
 
 }
 
+
 @media all and (min-width: 851px){
     /*Globalis body*/
     body {
@@ -103,12 +104,12 @@ body .feltoltes_oldal br{
         border-radius: 2px;
     }
 
-  	#sebesseg{
-      width: 4em;
-  		height: 2px;
-  		margin-left: 0.5em;
-  		position: relative;
-  		top: 0.3em;
+  	#txt_sebb{
+      width: 3em;
+  		/*height: 2px;*/
+  		/*margin-left: 0.5em;*/
+  		/*position: relative;*/
+  		/*top: 0.3em;*/
     }
 
   	.sebes{
@@ -248,7 +249,7 @@ body .feltoltes_oldal br{
 
 @media all and (max-width: 850px){
     body, div{
-        display:flex;
+        display:block;
         flex-flow: column;
     }
 
@@ -262,7 +263,7 @@ body .feltoltes_oldal br{
     }
 
     .idovonal, .idovonal canvas{
-        height: 20px;
+        height: 1.5em;
     }
 
     .kijelzes, .kijelzes canvas{
@@ -293,7 +294,7 @@ body .feltoltes_oldal br{
     }
 
     .megjelenito_oldal div.bo, body.megjelenito_oldal div.jo{
-        margin: 0 1em 0 1em;
+        margin: 0 0.5em 0 0.5em;
     }
 
     /*feltoltes oldal stilusa*/
