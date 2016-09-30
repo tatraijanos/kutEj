@@ -181,7 +181,7 @@
 <script type="text/javascript">
 	$( document ).ready(function() {
 		$('#tbl_megtekinthet tfoot th').each(function() {
-			$(this).html( '<input type="search" placeholder="Search" style="width: 50%;" />' );
+			$(this).html( '<input type="search" placeholder="Keresés" style="width: 50%;" />' );
 		});
 
 		var table = $('#tbl_megtekinthet').DataTable({
