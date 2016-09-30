@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<project name="MySql" id="Project_270b3e6" html="y" template="Default" database="MySql" >
+	<schema name="prim" catalogname="prim" >
+		<table name="prim_eredmenyek" >
+			<comment><![CDATA[A mérés animálásához szükséges szálak adatai. Az összefoglaló sorok alárendeltje, szálanként egy rekord.]]></comment>
+			<column name="id" type="int" jt="4" mandatory="y" unsigned="y" autoincrement="y" >
+				<comment><![CDATA[Egyedi azonosító]]></comment>
+			</column>
+			<column name="prim_osszefoglalo_id" type="smallint" jt="5" mandatory="y" unsigned="y" >
+				<comment><![CDATA[Az összefoglaló sor azonosítója. Az ott meghatározott max_ prefix-el rendelkező intervallumot, szálat veheti itt fel maximum értéknek egy sor.]]></comment>
+			</column>
+			<column name="szal" type="tinyint" jt="-6" mandatory="y" unsigned="y" >
+				<comment><![CDATA[A mérésen belüli szál aktuális száma. 1-től az összefoglaló táblában meghatározott számig veheti fel az értékét, egyel növekvően. ]]></comment>
+			</column>
+			<column name="int_tol" type="int" jt="4" mandatory="y" unsigned="y" >
+				<comment><![CDATA[A szálnak kiosztott tartomány kezdő értéke. Legalább 1 a kezdő értéke.]]></comment>
+			</column>
+			<column name="int_ig" type="int" jt="4" mandatory="y" unsigned="y" >
+				<comment><![CDATA[A szálnak kiosztott tartomány befejező értéke. Az összefoglaló sorokban meghatározott maximális érték lehet a legnagyobb felvett értéke.]]></comment>
+			</column>
+			<column name="megtalalt_prim_darab" type="mediumint" jt="4" mandatory="y" unsigned="y" >
+				<comment><![CDATA[A szál a futása során ennyi prímszámot talált meg.]]></comment>
+			</column>
+			<column name="szal_indulas_ido" type="bigint" jt="-5" mandatory="y" unsigned="y" >
+				<comment><![CDATA[A szál indulási ideje, unix-idő. Miliszekundumban megadott érték. Legkisebb értéke az összefoglaló sorában meghatározott indulási idő.]]></comment>
+			</column>
+			<column name="szal_futas_ido" type="int" jt="4" mandatory="y" unsigned="y" >
+				<comment><![CDATA[Az adott szál ennyi milliszekundum idő alatt válogatta ki az intervallumából a prímszámokat. Legkisebb értéke 0, legnagyobb az összefoglaló táblában meghatározott teljes futási idő.]]></comment>
+			</column>
+			<index name="pk_prim_eredmenyek" unique="PRIMARY_KEY" >
+				<column name="id" />
+			</index>
+			<index name="idx_prim_eredmenyek" unique="NORMAL" >
+				<column name="prim_osszefoglalo_id" />
+			</index>
+			<fk name="fk_p_eredmenyek_reference_p_osszefoglalo" to_schema="prim" to_table="prim_osszefoglalo" >
+				<fk_column name="prim_osszefoglalo_id" pk="id" />
+			</fk>
+			<storage><![CDATA[engine=InnoDB]]></storage>
+		</table>
+		<table name="prim_feltolt" >
+			<comment><![CDATA[Ebben a táblában tároljuk a feltöltéseket.]]></comment>
+			<column name="id" type="smallint" jt="5" mandatory="y" unsigned="y" autoincrement="y" >
+				<comment><![CDATA[Egyedi azonosító]]></comment>
+			</column>
+			<column name="uuid" type="varchar" length="15" jt="12" mandatory="y" >
+				<comment><![CDATA[A feltöltést ezzel azonosítjuk, ez alapján osztható meg]]></comment>
+			</column>
+			<column name="nyelv_cd" type="tinyint" jt="-6" mandatory="y" unsigned="y" >
+				<comment><![CDATA[A feltöltött CSV állomány programozási nyelve.
+md.csoport = P_NYELV]]></comment>
+			</column>
+			<column name="feltoltes_datum" type="datetime" jt="93" mandatory="y" >
+				<defo>CURRENT_TIMESTAMP</defo>
+				<comment><![CDATA[Feltöltés időpontja]]></comment>
+			</column>
+			<column name="meret" type="mediumint" jt="4" unsigned="y" >
+				<comment><![CDATA[A feltöltött fájl méretének tárolására szolgáló mező. A mező byte-ban kerül tárolásra.]]></comment>
+			</column>
+			<column name="elfogadva_10" type="bool" jt="-7" >
+				<defo>true</defo>
+				<comment><![CDATA[A fájl feltöltődése esetén bejegyzés jön létre a táblában, de a validátor megtagadhatja a fájl mentését. Akkor hamis értéket kap a mező. Igaz esetén a fájl eredetinek bizonyult és adatbázisba kerültek az értékei.]]></comment>
+			</column>
+			<column name="hiba" type="varchar" length="1024" jt="12" >
+				<comment><![CDATA[A feldolgozás során keletkező hibák szövege, ha a mező nem null akkor elfogadva_10 értéke false.]]></comment>
+			</column>
+			<column name="torolt_10" type="bool" jt="-7" mandatory="y" >
+				<defo>false</defo>
+				<comment><![CDATA[Logikailag törölt-e a feltöltés. Ebben az esetben nem jelenik meg a listában.]]></comment>
+			</column>
+			<index name="pk_prim_feltolt" unique="PRIMARY_KEY" >
+				<column name="id" />
+			</index>
+			<index name="unit_prim_feltolt_uuid" unique="UNIQUE" >
+				<column name="uuid" />
+			</index>
+		</table>
+		<table name="prim_md" >
+			<comment><![CDATA[Törzsadatok tárolására szolgáló tábla]]></comment>
+			<column name="id" type="smallint" jt="5" mandatory="y" unsigned="y" autoincrement="y" >
+				<comment><![CDATA[Egyedi azonosító]]></comment>
+			</column>
+			<column name="csoport" type="varchar" length="32" jt="12" mandatory="y" >
+				<comment><![CDATA[Csoport kulcsa, nyomtatott angol ABC betűiből, egy rövid név, ami tükrözi hogy a csoport mire való.]]></comment>
+			</column>
+			<column name="sequence" type="tinyint" jt="-6" mandatory="y" unsigned="y" >
+				<comment><![CDATA[Ennek a mezőnek mentése történik az adott egyednél, csoportonként 1-től folytonos szám]]></comment>
+			</column>
+			<column name="leiras" type="varchar" length="256" jt="12" mandatory="y" >
+				<comment><![CDATA[A törzsadatcsoport "értéke", ez jelenik meg a listában]]></comment>
+			</column>
+			<column name="ertek" type="varchar" length="16" jt="12" >
+				<defo>&quot;-&quot;</defo>
+				<comment><![CDATA[A PHP motornak lehet szükséges egyes opciókhoz viselkedést társítani, egyfajta változó ez is. Ha nincs ilyen funkció "-"-val jelölendő.]]></comment>
+			</column>
+			<column name="torolt_10" type="bool" jt="-7" mandatory="y" >
+				<defo>false</defo>
+			</column>
+			<index name="pk_prim_md" unique="PRIMARY_KEY" >
+				<column name="id" />
+			</index>
+			<index name="idx_prim_md_csoport" unique="NORMAL" >
+				<column name="csoport" />
+			</index>
+			<storage><![CDATA[engine=InnoDB]]></storage>
+		</table>
+		<table name="prim_osszefoglalo" >
+			<comment><![CDATA[A CSV feldolgozása során az összefoglaló sorok ebbe a táblába kerülnek mentésre. Animálás esetén a fájl kiválasztása esetén ebből a táblából töltjük fel a legördülő elemeket.]]></comment>
+			<column name="id" type="smallint" jt="5" mandatory="y" unsigned="y" autoincrement="y" >
+				<comment><![CDATA[Egyedi azonosító]]></comment>
+			</column>
+			<column name="prim_feltolt_id" type="smallint" jt="5" mandatory="y" unsigned="y" >
+				<comment><![CDATA[A prim_feltolt tábla rekordjának azonosítója.]]></comment>
+			</column>
+			<column name="metodus_cd" type="tinyint" jt="-6" mandatory="y" unsigned="y" >
+				<comment><![CDATA[Az összefoglaló sor és az alárendelt rekordok metódusa. 
+md.csoport = METODUS]]></comment>
+			</column>
+			<column name="max_tartomany_cd" type="tinyint" jt="-6" mandatory="y" unsigned="y" >
+				<comment><![CDATA[Az összefoglaló sor és az alárendelt rekordok maximális tartománya. 
+md.csoport = TARTOMANY]]></comment>
+			</column>
+			<column name="max_szal" type="tinyint" jt="-6" mandatory="y" unsigned="y" >
+				<comment><![CDATA[Az összefoglaló sor és az alárendelt rekordok maximális szálainak száma. ]]></comment>
+			</column>
+			<column name="indulas_ido" type="bigint" jt="-5" mandatory="y" unsigned="y" >
+				<comment><![CDATA[A kiválasztott mérés az itt meghatározott időponttól indult (unix-idő, milliszekundum). ]]></comment>
+			</column>
+			<column name="teljes_futasi_ido" type="int" jt="4" mandatory="y" unsigned="y" >
+				<comment><![CDATA[A kiválasztott mérés az itt meghatározott ideig (milliszekundum) futott.]]></comment>
+			</column>
+			<index name="pk_prim_osszefoglalo" unique="PRIMARY_KEY" >
+				<column name="id" />
+			</index>
+			<fk name="fk_p_osszefoglalo_ref_p_feltolt" to_schema="prim" to_table="prim_feltolt" >
+				<fk_column name="prim_feltolt_id" pk="id" />
+			</fk>
+			<storage><![CDATA[engine=InnoDB]]></storage>
+		</table>
+	</schema>
+	<connector name="MySql" database="MySql" driver_class="com.mysql.jdbc.Driver" driver_jar="mysql-connector-java-5.1.38-bin.jar" driver_desc="Standard" host="localhost" port="3306" instance="prim" user="root" />
+	<layout name="Default" id="Layout_2815ab6f" show_relation_columns="y" >
+		<entity schema="prim" name="prim_feltolt" color="c1d8ee" x="45" y="45" />
+		<entity schema="prim" name="prim_md" color="c1d8ee" x="510" y="45" />
+		<entity schema="prim" name="prim_osszefoglalo" color="c1d8ee" x="270" y="45" />
+		<entity schema="prim" name="prim_eredmenyek" color="c1d8ee" x="270" y="315" />
+	</layout>
+</project>
