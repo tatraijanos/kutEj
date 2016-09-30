@@ -329,16 +329,10 @@ body .feltoltes_oldal br{
         padding-bottom: 5%;
     }
 
-    .feltoltes_oldal a{
-        padding-bottom: 3%;
-    }
-
     .feltoltes_oldal .oldal_tartalom{
         margin-left: 1em;
         margin-right: 1em;
     }
-
-  }
 
     .feltoltes_oldal a{
          display: flex;
@@ -357,7 +351,11 @@ body .feltoltes_oldal br{
 
     h1{
     	font-size: 1.3em;
+      padding-left: 0.5em;
     }
+
+  }
+
 /*
 body.feltoltes_oldal h1{
     font-size: 1.3em;
