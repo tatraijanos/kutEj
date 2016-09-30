@@ -29,8 +29,10 @@
 		<script type="text/javascript" src="./partials/js/grapics.js"></script>
 	</head>
 	<body>
-		<a href="./index.php" alt="Animáció">Animáció kezelő</a>
-		<a href="./feltolt.php" alt="Feltöltés">Feltöltés</a>
-		<!-- <a href="./strategia.php" alt="Stratégiák">Stratégiák</a> -->
-		<a href="./verziok.php" alt="Verziók">Verziók</a>
-		<hr />
+		<div class="fejlec_menu">
+			<a href="./index.php" alt="Animáció">Animáció kezelő</a>
+			<a href="./feltolt.php" alt="Feltöltés">Feltöltés</a>
+			<!-- <a href="./strategia.php" alt="Stratégiák">Stratégiák</a> -->
+			<a href="./verziok.php" alt="Verziók">Verziók</a>
+			<hr />
+	</div>

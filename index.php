@@ -1,4 +1,4 @@
-﻿<?php include_once './partials/fejlec.php'; ?>
+<?php include_once './partials/fejlec.php'; ?>
 
 <?php
 	//print_r($_POST);
@@ -15,7 +15,7 @@
 								/*'Prim50' => 'Pascal normál', 'Prim51' => 'Pascal optimális', 'Prim52' => 'Pascal páratlan',*/
 								'Prim6' => 'Arányos', 'Prim70' => 'Öszetett', 'Prim71' => 'Prím', 'Prim8' => 'Félprím',
 								'Prim90' => 'Koch-görbe', 'Prim91' => 'Inverz négyzetes');
-		const INTVALL = array(	10000 => '1 -   10000', 100000 => '1 -  100000', 
+		const INTVALL = array(	10000 => '1 -   10000', 100000 => '1 -  100000',
 								1000000 => '1 - 1000000', 10000000 => '1 - 10000000');
 
 		private static $teljesIdo = 0;
@@ -422,40 +422,41 @@
 
 <?php if(isset($_POST['btn_betoltes'])) $eredmeny = $indx -> validator(); ?>
 
-<form method="post">
-	<fieldset>
-		<label for = "nyelv">Program nyelv:</label>
-		<select name = "nyelv" id = "nyelv" >
-			<option></option>
-			<?php echo $indx -> option('nyelv'); ?>
-		</select>
-
-		<label for = "metod">Metódus:</label>
-		<select name = "metod" id = "metod">
-			<option></option>
-			<?php echo $indx -> option('metod'); ?>
-		</select>
-
-		<label for = "inter">Intervallum:</label>
-		<select name = "inter" id = "inter">
-			<option></option>
-			<?php echo $indx -> option('inter'); ?>
-		</select>
-
-		<label for = "szalak">Szálak száma:</label>
-		<input type = "number" name = "szalak" id = "szalak" min = "1" max="<?php echo $indx -> getMaxSzal(); ?>" value = "<?php if(isset($_POST['szalak'])) echo $_POST['szalak']; else echo '1'; ?>" />
-
-		<br />
-
-		<input type = "submit" name = "btn_betoltes" value = "Betöltés" />
-		<input type = "button" name = "btn_indit" value = "Lejátszás" alt="Lejátszás gomb" />
-		<input type = "button" name = "btn_leallit" value = "Leállítás" alt="Leállítás gomb" />
-
-	</fieldset>
-</form>
-
 <div class="megjelenito_oldal">
 	<div class="bo">
+
+	<form method="post">
+		<fieldset>
+			<label for = "nyelv">Program nyelv:</label>
+			<select name = "nyelv" id = "nyelv" >
+				<option></option>
+				<?php echo $indx -> option('nyelv'); ?>
+			</select>
+
+			<label for = "metod">Metódus:</label>
+			<select name = "metod" id = "metod">
+				<option></option>
+				<?php echo $indx -> option('metod'); ?>
+			</select>
+
+			<label for = "inter">Intervallum:</label>
+			<select name = "inter" id = "inter">
+				<option></option>
+				<?php echo $indx -> option('inter'); ?>
+			</select>
+
+			<label for = "szalak">Szálak száma:</label>
+			<input type = "number" name = "szalak" id = "szalak" min = "1" max="<?php echo $indx -> getMaxSzal(); ?>" value = "<?php if(isset($_POST['szalak'])) echo $_POST['szalak']; else echo '1'; ?>" />
+
+			<br />
+
+			<input type = "submit" name = "btn_betoltes" value = "Betöltés" />
+			<input type = "button" name = "btn_indit" value = "Lejátszás" alt="Lejátszás gomb" />
+			<input type = "button" name = "btn_leallit" value = "Leállítás" alt="Leállítás gomb" />
+
+		</fieldset>
+	</form>
+
 		<div class="idovonal">
 			<canvas id="katt_canvas"></canvas>
 		</div>
@@ -472,6 +473,7 @@
 
 		<div><?php include_once './eredmenyek.php'; ?></div>
 	</div>
+	<div class="lablac">
+		<?php include_once './partials/lablec.php'; ?>
+	</div>
 </div>
-
-<?php include_once './partials/lablec.php'; ?>
