@@ -475,7 +475,7 @@
 
 		<div><?php include_once './eredmenyek.php'; ?></div>
 	</div>
-	<div class="lablac">
-		<?php include_once './partials/lablec.php'; ?>
-	</div>
+
+	<?php include_once './partials/lablec.php'; ?>
+
 </div>

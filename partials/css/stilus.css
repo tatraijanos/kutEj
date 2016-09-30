@@ -37,31 +37,31 @@ body .feltoltes_oldal br{
 }
 
 .fejlec_menu{
-      margin: 0;
-      padding: 0;
-      overflow: hidden;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
 }
 
 .fejlec_menu hr {
-  padding-top: 0;
-  margin-top: 0;
+    padding-top: 0;
+    margin-top: 0;
 }
 
 .fejlec_menu a{
-  display: inline-block;
-  color: black;
-  font-weight: 400;
-  /*padding-right: 0.5em;*/
-  padding: 0.5em 0.5em;
-  text-decoration: none;
+    display: inline-block;
+    color: black;
+    font-weight: 400;
+    /*padding-right: 0.5em;*/
+    padding: 0.5em 0.5em;
+    text-decoration: none;
 }
 
 .fejlec_menu a:active{
-
+    background-color: #eee;
 }
 
 .fejlec_menu a:hover{
-  background-color: #ccc;
+    background-color: #ccc;
 }
 
 .fejlec_menu a:visited{
@@ -72,6 +72,13 @@ body .feltoltes_oldal br{
 
 }
 
+.lablec {
+  width: 100%;
+}
+
+.lablec hr{
+  width: 100%;
+}
 
 @media all and (min-width: 851px){
     /*Globalis body*/
@@ -80,6 +87,7 @@ body .feltoltes_oldal br{
         background: -o-linear-gradient(#FFFFFF, #F2F2F2); /* For Opera 11.1 to 12.0 */
         background: -moz-linear-gradient(#FFFFFF, #F2F2F2); /* For Firefox 3.6 to 15 */
         background: linear-gradient(#FFFFFF, #F2F2F2); /* Standard syntax (must be last) */
+        overflow-x: hidden;
     }
 
     /*Megjelenito oldal*/
