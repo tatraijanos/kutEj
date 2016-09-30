@@ -8,7 +8,7 @@
 		const P_NYELV = array(	'J0' => 'Java', 'J1' => 'JavaScript',
 								'C0' => 'C#', 'C1' => 'C++',
 								'D0' => 'Delphi',
-								/*'P0' => 'PHP',*/ 'P1' => 'Python',
+								/*'P0' => 'PHP', 'P1' => 'Python',*/
 								'V0' => 'Visual Basic');
 		const P_NYTSZ = array(	'C#', 'C++', 'Delphi', 'Java', 'JavaScript', 'Perl', 'PHP', 'PHP7', 'Python', 'Ruby', 'Visual Basic');
 		const METODUS = array(	'Prim1' => 'Szál nélküli', 'Prim2' => 'Normál', 'Prim3' => 'Hatvány', 'Prim4' => 'Fibonacci',
